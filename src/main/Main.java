@@ -1,6 +1,10 @@
-package sample;
+package main;
 
+import constants.Constants;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -11,7 +15,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import objects.MenuButton;
 
-public class Main extends Application {
+public class Main extends Application implements EventHandler {
 
     Button onePlayerButton;
     Button twoPlayersButton;
@@ -20,7 +24,7 @@ public class Main extends Application {
     Button creditsButton;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage)  throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         onePlayerButton = new MenuButton("1 Player");
@@ -28,6 +32,12 @@ public class Main extends Application {
         mapEditorButton = new MenuButton("Map Editor");
         settingsButton = new MenuButton("Settings");
         creditsButton = new MenuButton("Credits");
+
+        onePlayerButton.setOnAction(this);
+        twoPlayersButton.setOnAction(this);
+        mapEditorButton.setOnAction(this);
+        settingsButton.setOnAction(this);
+        creditsButton.setOnAction(this);
 
         VBox centerMenu = new VBox();
         centerMenu.setPadding(new Insets(110,325,110,325));
@@ -42,7 +52,7 @@ public class Main extends Application {
         BorderPane borderPaneLayout = new BorderPane();
         Background background = new Background(
                                     new BackgroundImage(
-                                            new Image("resources/menu_background.png", 800, 600, false, true),
+                                            new Image("resources/menu_background.png", Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, false, true),
                                                     BackgroundRepeat.REPEAT,
                                                     BackgroundRepeat.NO_REPEAT,
                                                     BackgroundPosition.DEFAULT,
@@ -51,10 +61,10 @@ public class Main extends Application {
         borderPaneLayout.setCenter(centerMenu);
 
 
-        Scene windows = new Scene(borderPaneLayout, 800, 600);
+        Scene windows = new Scene(borderPaneLayout, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
 
 
-        primaryStage.setTitle("Tank");
+        primaryStage.setTitle("SoftUni Tank");
         primaryStage.setScene(windows);
         primaryStage.show();
     }
@@ -62,5 +72,21 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void handle(Event event) {
+        EventTarget target = event.getTarget();
+        if(target == onePlayerButton){
+            System.out.println("one player btn");
+        } else if (target == twoPlayersButton) {
+            System.out.println("two player btn");
+        } else if (target == mapEditorButton) {
+            System.out.println("map edit btn");
+        } else if (target == settingsButton) {
+            System.out.println("settings btn");
+        } else if (target == creditsButton) {
+            System.out.println("credit btn");
+        }
     }
 }
