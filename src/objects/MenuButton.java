@@ -1,17 +1,21 @@
 package objects;
 
-import java.awt.*;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 
-public class MenuButton{
+public class MenuButton extends Button{
     private static final int BUTTON_WIDTH = 140;
     private static final int BUTTON_HEIGHT = 60;
 
+    public MenuButton(String text) {
+        super(text);
 
-    public static Button CreateButton(String text){
-        Button button = new Button(text);
-        button.setMinSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        button.setMaxSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        return button;
+        this.setMinSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        this.setMaxSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        this.setTextFill(Color.WHITE);
+        this.setStyle("-fx-font-size:22;" +
+            "-fx-background-radius: 1em;" +
+            "-fx-background-color: black");
+
     }
 }

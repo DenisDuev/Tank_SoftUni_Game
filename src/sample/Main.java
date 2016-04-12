@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import objects.MenuButton;
@@ -23,11 +23,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
-        onePlayerButton = MenuButton.CreateButton("1 Player");
-        twoPlayersButton = MenuButton.CreateButton("2 Players");
-        mapEditorButton = MenuButton.CreateButton("Map Editor");
-        settingsButton = MenuButton.CreateButton("Settings");
-        creditsButton = MenuButton.CreateButton("Credits");
+        onePlayerButton = new MenuButton("1 Player");
+        twoPlayersButton = new MenuButton("2 Players");
+        mapEditorButton = new MenuButton("Map Editor");
+        settingsButton = new MenuButton("Settings");
+        creditsButton = new MenuButton("Credits");
 
         VBox centerMenu = new VBox();
         centerMenu.setPadding(new Insets(110,325,110,325));
@@ -40,6 +40,14 @@ public class Main extends Application {
                 creditsButton);
 
         BorderPane borderPaneLayout = new BorderPane();
+        Background background = new Background(
+                                    new BackgroundImage(
+                                            new Image("resources/menu_background.png", 800, 600, false, true),
+                                                    BackgroundRepeat.REPEAT,
+                                                    BackgroundRepeat.NO_REPEAT,
+                                                    BackgroundPosition.DEFAULT,
+                                                    BackgroundSize.DEFAULT));
+        borderPaneLayout.setBackground(background);
         borderPaneLayout.setCenter(centerMenu);
 
 
