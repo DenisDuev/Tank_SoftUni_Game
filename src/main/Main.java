@@ -23,7 +23,6 @@ public class Main extends Application implements EventHandler {
     Button mapEditorButton;
     Button settingsButton;
     Button creditsButton;
-    Game display;
     Scene windows;
 
     @Override
