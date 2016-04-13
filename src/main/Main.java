@@ -1,6 +1,7 @@
 package main;
 
 import constants.Constants;
+import game.Game;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -22,6 +23,8 @@ public class Main extends Application implements EventHandler {
     Button mapEditorButton;
     Button settingsButton;
     Button creditsButton;
+    Game display;
+    Scene windows;
 
     @Override
     public void start(Stage primaryStage)  throws Exception{
@@ -33,7 +36,7 @@ public class Main extends Application implements EventHandler {
         settingsButton = new MenuButton("Settings");
         creditsButton = new MenuButton("Credits");
 
-        onePlayerButton.setOnAction(this);
+        onePlayerButton.setOnAction(c -> new Game(primaryStage).start());
         twoPlayersButton.setOnAction(this);
         mapEditorButton.setOnAction(this);
         settingsButton.setOnAction(this);
@@ -61,11 +64,12 @@ public class Main extends Application implements EventHandler {
         borderPaneLayout.setCenter(centerMenu);
 
 
-        Scene windows = new Scene(borderPaneLayout, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
+        windows = new Scene(borderPaneLayout, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
 
 
         primaryStage.setTitle("SoftUni Tank");
         primaryStage.setScene(windows);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -77,9 +81,7 @@ public class Main extends Application implements EventHandler {
     @Override
     public void handle(Event event) {
         EventTarget target = event.getTarget();
-        if(target == onePlayerButton){
-            System.out.println("one player btn");
-        } else if (target == twoPlayersButton) {
+        if (target == twoPlayersButton) {
             System.out.println("two player btn");
         } else if (target == mapEditorButton) {
             System.out.println("map edit btn");
