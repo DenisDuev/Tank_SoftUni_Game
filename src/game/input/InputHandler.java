@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import objects.Tanks.Tank;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -11,14 +12,15 @@ import java.util.List;
  */
 public class InputHandler {
     private Scene scene;
-    private Tank tank;
-    private List<String> input;
-    private long lastTime = System.nanoTime();
+    private Tank tank1;
+    private Tank tank2;
+    private HashSet<String> input;
 
-    public InputHandler(Scene scene, Tank player) {
+    public InputHandler(Scene scene, Tank player1, Tank player2) {
         this.scene = scene;
-        this.tank = player;
-        this.input = new ArrayList<>();
+        this.tank1 = player1;
+        this.tank2 = player2;
+        this.input = new HashSet<String>();
     }
 
     public void refresh() {
@@ -38,19 +40,36 @@ public class InputHandler {
     }
 
     private void handleKeys() {
-        //TODO two players
-        if (this.input.contains("LEFT") || this.input.contains("A"))
-            this.tank.move(-1, 0);
-        if (this.input.contains("RIGHT") || this.input.contains("D"))
-            this.tank.move(1, 0);
-        if (this.input.contains("UP") || this.input.contains("W"))
-            this.tank.move(0, -1);
-
-        if (this.input.contains("DOWN") || this.input.contains("S"))
-            this.tank.move(0, 1);
+        if (this.input.contains("LEFT")) {
+            this.tank1.move(-1, 0);
+        } else
+        if (this.input.contains("RIGHT")) {
+            this.tank1.move(1, 0);
+        } else
+        if (this.input.contains("UP")) {
+            this.tank1.move(0, -1);
+        }else
+        if (this.input.contains("DOWN")) {
+            this.tank1.move(0, 1);
+        }
 
         if (this.input.contains("SPACE")) {
             //TODO fire
+            System.out.println(this.tank1.getName() + " fire");
+        }
+
+        if (this.input.contains("A")) {
+            this.tank2.move(-1, 0);
+        } else if (this.input.contains("D")) {
+            this.tank2.move(1, 0);
+        } else if (this.input.contains("W")) {
+            this.tank2.move(0, -1);
+        } else if (this.input.contains("S")) {
+            this.tank2.move(0, 1);
+        }
+        if (this.input.contains("ENTER")){
+            //TODO fire
+            System.out.println(this.tank2.getName() + " fire");
         }
     }
 }

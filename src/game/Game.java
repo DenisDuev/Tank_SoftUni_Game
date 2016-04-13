@@ -29,8 +29,9 @@ public class Game implements Runnable {
         Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
 
 
-        Tank tank = new Tank("Denis",100,50,50);
-        InputHandler inputHandler = new InputHandler(s,tank);
+        Tank tank1 = new Tank("Denis",100,50,50);
+        Tank tank2 = new Tank("Pesho",300,100,100);
+        InputHandler inputHandler = new InputHandler(s,tank1, tank2);
         root.getChildren().add(canvas);
         stage.setScene(s);
 
@@ -47,7 +48,8 @@ public class Game implements Runnable {
             @Override
             public void handle(long now) {
                 gc.drawImage(background,0,0);
-                gc.drawImage(tank.getUpImage(), tank.getX(), tank.getY());
+                gc.drawImage(tank1.getUpImage(), tank1.getX(), tank1.getY());
+                gc.drawImage(tank2.getUpImage(), tank2.getX(), tank2.getY());
                 inputHandler.refresh();
 
             }

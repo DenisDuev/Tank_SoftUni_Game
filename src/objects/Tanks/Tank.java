@@ -48,4 +48,8 @@ public class Tank {
     public int getY() {
         return y;
     }
+
+    public String getName() {
+        return name;
+    }
 }
