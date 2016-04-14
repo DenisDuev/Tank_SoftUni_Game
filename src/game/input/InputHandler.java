@@ -15,12 +15,14 @@ public class InputHandler {
     private Tank tank1;
     private Tank tank2;
     private HashSet<String> input;
+    private boolean hasTwoPlayers;
 
-    public InputHandler(Scene scene, Tank player1, Tank player2) {
+    public InputHandler(Scene scene, Tank player1, Tank player2, boolean hasTwoPlayers) {
         this.scene = scene;
         this.tank1 = player1;
         this.tank2 = player2;
         this.input = new HashSet<String>();
+        this.hasTwoPlayers = hasTwoPlayers;
     }
 
     public void refresh() {
@@ -57,20 +59,22 @@ public class InputHandler {
             //TODO fire
             System.out.println(this.tank1.getName() + " fire");
         }
+        if (hasTwoPlayers){
+            if (this.input.contains("A")) {
+                this.tank2.move(-1, 0);
+            } else if (this.input.contains("D")) {
+                this.tank2.move(1, 0);
+            } else if (this.input.contains("W")) {
+                this.tank2.move(0, -1);
+            } else if (this.input.contains("S")) {
+                this.tank2.move(0, 1);
+            }
+            if (this.input.contains("ENTER")){
+                //TODO fire
+                System.out.println(this.tank2.getName() + " fire");
+            }
+        }
 
-        if (this.input.contains("A")) {
-            this.tank2.move(-1, 0);
-        } else if (this.input.contains("D")) {
-            this.tank2.move(1, 0);
-        } else if (this.input.contains("W")) {
-            this.tank2.move(0, -1);
-        } else if (this.input.contains("S")) {
-            this.tank2.move(0, 1);
-        }
-        if (this.input.contains("ENTER")){
-            //TODO fire
-            System.out.println(this.tank2.getName() + " fire");
-        }
     }
 }
 

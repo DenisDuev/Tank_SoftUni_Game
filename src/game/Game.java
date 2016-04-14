@@ -22,10 +22,12 @@ public class Game implements Runnable {
     private Stage stage;
     private GraphicsContext gc;
     private static int[][] matrix = new int[MATRIX_ROWS][MATRIX_COLS];
+    private boolean hasTwoPlayers;
 
 
-    public Game(Stage stage) {
+    public Game(Stage stage, boolean hasTwoPlayers) {
         this.stage = stage;
+        this.hasTwoPlayers = hasTwoPlayers;
     }
 
     public void start() {
@@ -39,7 +41,7 @@ public class Game implements Runnable {
         Tank tank1 = new Tank("Denis", 100, 50, 50);
         Tank tank2 = new Tank("Pesho", 300, 100, 100);
         InitialiseMatrix();
-        InputHandler inputHandler = new InputHandler(s, tank1, tank2);
+        InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers);
         root.getChildren().add(canvas);
         stage.setScene(s);
 
@@ -52,9 +54,11 @@ public class Game implements Runnable {
             @Override
             public void handle(long now) {
                 gc.drawImage(background, 0, 0);
-                gc.drawImage(tank1.getImage(), tank1.getX(), tank1.getY());
-                gc.drawImage(tank2.getImage(), tank2.getX(), tank2.getY());
                 DrawWalls(gc, wall);
+                gc.drawImage(tank1.getImage(), tank1.getX(), tank1.getY());
+                if (hasTwoPlayers) {
+                    gc.drawImage(tank2.getImage(), tank2.getX(), tank2.getY());
+                }
                 inputHandler.refresh();
 
             }

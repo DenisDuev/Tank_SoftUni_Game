@@ -35,8 +35,8 @@ public class Main extends Application implements EventHandler {
         settingsButton = new MenuButton("Settings");
         creditsButton = new MenuButton("Credits");
 
-        onePlayerButton.setOnAction(c -> new Game(primaryStage).start());
-        twoPlayersButton.setOnAction(this);
+        onePlayerButton.setOnAction(c -> new Game(primaryStage, false).start());
+        twoPlayersButton.setOnAction(b -> new Game(primaryStage, true).start());
         mapEditorButton.setOnAction(this);
         settingsButton.setOnAction(this);
         creditsButton.setOnAction(this);
@@ -80,9 +80,7 @@ public class Main extends Application implements EventHandler {
     @Override
     public void handle(Event event) {
         EventTarget target = event.getTarget();
-        if (target == twoPlayersButton) {
-            System.out.println("two player btn");
-        } else if (target == mapEditorButton) {
+        if (target == mapEditorButton) {
             System.out.println("map edit btn");
         } else if (target == settingsButton) {
             System.out.println("settings btn");
