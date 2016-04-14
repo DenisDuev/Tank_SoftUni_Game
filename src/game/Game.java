@@ -48,8 +48,8 @@ public class Game implements Runnable {
             @Override
             public void handle(long now) {
                 gc.drawImage(background,0,0);
-                gc.drawImage(tank1.getUpImage(), tank1.getX(), tank1.getY());
-                gc.drawImage(tank2.getUpImage(), tank2.getX(), tank2.getY());
+                gc.drawImage(tank1.getImage(), tank1.getX(), tank1.getY());
+                gc.drawImage(tank2.getImage(), tank2.getX(), tank2.getY());
                 inputHandler.refresh();
 
             }

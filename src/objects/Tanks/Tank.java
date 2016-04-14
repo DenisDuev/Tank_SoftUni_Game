@@ -6,12 +6,11 @@ import javafx.scene.image.Image;
  * Created by Denis on 13.4.2016 ã..
  */
 public class Tank {
-    enum posittion {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    }
+    private final int UP = 0;
+    private final int DOWN = 1;
+    private final int LEFT = 2;
+    private final int RIGHT = 3;
+
 
     private String name;
     private int health;
@@ -19,6 +18,8 @@ public class Tank {
     private Image downImage;
     private Image leftImage;
     private Image rightImage;
+    private Image currentImage;
+    private int direction;
 
     private int x;
     private int y;
@@ -28,17 +29,65 @@ public class Tank {
         this.health = health;
         this.x = x;
         this.y = y;
-        this.upImage = new Image("resources/unnamed.png");
+        this.upImage = new Image("resources/tanks/silver_tank/silver_tank_up.png");
+        this.downImage = new Image("resources/tanks/silver_tank/silver_tank_down.png");
+        this.leftImage = new Image("resources/tanks/silver_tank/silver_tank_left.png");
+        this.rightImage = new Image("resources/tanks/silver_tank/silver_tank_right.png");
+        this.currentImage = new Image("resources/tanks/silver_tank/silver_tank_up.png");
+        this.direction = UP;
     }
 
     public void move(int xAdd, int yAdd) {
         //TODO check for collison
+        checkDirection(xAdd, yAdd);
         this.x += xAdd;
         this.y += yAdd;
     }
 
-    public Image getUpImage() {
-        return upImage;
+    private void checkDirection(int x, int y) {
+        int currentDir = 0;
+        if (x != 0) {
+            if (x == 1) {
+                currentDir = RIGHT;
+            } else {
+                currentDir = LEFT;
+            }
+        } else {
+            if (y == 1) {
+                currentDir = DOWN;
+            } else {
+                currentDir = UP;
+            }
+        }
+        ChangeDirection(currentDir);
+
+    }
+
+    private void ChangeDirection(int currentDirection) {
+        if (this.direction != currentDirection) {
+            switch (currentDirection) {
+                case UP:
+                    this.currentImage = this.upImage;
+                    this.direction = UP;
+                    break;
+                case DOWN:
+                    this.currentImage = this.downImage;
+                    this.direction = DOWN;
+                    break;
+                case LEFT:
+                    this.currentImage = this.leftImage;
+                    this.direction = LEFT;
+                    break;
+                case RIGHT:
+                    this.currentImage = this.rightImage;
+                    this.direction = RIGHT;
+                    break;
+            }
+        }
+    }
+
+    public Image getImage() {
+        return this.currentImage;
     }
 
     public int getX() {
