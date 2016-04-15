@@ -3,6 +3,7 @@ package objects.Tanks;
 import constants.Constants;
 import game.CollisionDetector;
 import javafx.scene.image.Image;
+import objects.Bullet;
 import objects.GameObject;
 
 /**
@@ -89,13 +90,6 @@ public class Tank extends GameObject {
         return this.currentImage;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
 
     public String getName() {
         return name;
@@ -103,6 +97,10 @@ public class Tank extends GameObject {
 
     public void setCollisionDetector(CollisionDetector collisionDetector) {
         this.collisionDetector = collisionDetector;
+    }
+
+    public Bullet spawnBullet(){
+        return new Bullet(this.x, this.y, this.direction);
     }
 
 

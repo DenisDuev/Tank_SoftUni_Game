@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import objects.Bullet;
 import objects.Tanks.Tank;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class Game implements Runnable {
     private static int[][] matrix = new int[MATRIX_ROWS][MATRIX_COLS];
     private boolean hasTwoPlayers;
     private CollisionDetector collisionDetector;
+    private BulletHandler bulletHandler;
 
 
     public Game(Stage stage, boolean hasTwoPlayers) {
@@ -51,7 +53,8 @@ public class Game implements Runnable {
         tank2.setCollisionDetector(collisionDetector);
 
         InitialiseMatrix();
-        InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers);
+        bulletHandler = new BulletHandler(collisionDetector);
+        InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
 
         root.getChildren().add(canvas);
         stage.setScene(s);
@@ -66,6 +69,7 @@ public class Game implements Runnable {
             public void handle(long now) {
                 gc.drawImage(background, 0, 0);
                 DrawWalls(gc, wall);
+                DrawBullets(gc);
                 gc.drawImage(tank1.getImage(), tank1.getX(), tank1.getY());
                 if (hasTwoPlayers) {
                     gc.drawImage(tank2.getImage(), tank2.getX(), tank2.getY());
@@ -76,6 +80,13 @@ public class Game implements Runnable {
 
         }.start();
 
+    }
+
+    private void DrawBullets(GraphicsContext gc) {
+        List<Bullet> bullets = bulletHandler.GetBulletsToDraw();
+        for (Bullet bullet : bullets) {
+            gc.drawImage(bullet.getImage(), bullet.getX(), bullet.getY());
+        }
     }
 
     //TODO fix matrix generation

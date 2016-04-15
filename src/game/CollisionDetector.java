@@ -1,6 +1,7 @@
 package game;
 
 import constants.Constants;
+import objects.Bullet;
 import objects.Tanks.Tank;
 
 import java.util.List;
@@ -47,6 +48,16 @@ public class CollisionDetector {
             if (isUpLeftPoint || isUpRightPoint || isDownLeftPoint || isDownRightPoint) {
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    public boolean isBulletCollide(Bullet bullet){
+        int bulletX = bullet.getX();
+        int bulletY = bullet.getY();
+        if (bulletX < 0 || bulletX >= Constants.WINDOWS_WIDTH || bulletY < 0 || bulletY >= Constants.WINDOWS_HEIGHT){
+            return false;
         }
 
         return true;
