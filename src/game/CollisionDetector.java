@@ -56,10 +56,10 @@ public class CollisionDetector {
     public boolean isBulletCollide(Bullet bullet){
         int bulletX = bullet.getX();
         int bulletY = bullet.getY();
-        if (bulletX < 0 || bulletX >= Constants.WINDOWS_WIDTH || bulletY < 0 || bulletY >= Constants.WINDOWS_HEIGHT){
-            return false;
+        if (bulletX < 0 || bulletX > Constants.BOARD_SIZE - Bullet.IMAGE_WIDHT || bulletY < 0 || bulletY >= Constants.BOARD_SIZE){
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

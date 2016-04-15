@@ -7,9 +7,9 @@ import javafx.scene.image.Image;
  * Created by Denis on 15.4.2016 ã..
  */
 public class Bullet extends GameObject {
-    private static final int VELOCITY = 5;
-    private static final int IMAGE_WIDHT = 3;
-    private static final int IMAGE_HEIGHT = 8;
+    public static final int VELOCITY = 5;
+    public static final int IMAGE_WIDHT = 3;
+    public static final int IMAGE_HEIGHT = 8;
 
     private int xVelocity;
     private int yVelocity;

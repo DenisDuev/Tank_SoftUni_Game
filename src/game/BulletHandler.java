@@ -25,7 +25,7 @@ public class BulletHandler {
         for (int index = 0; index < bullets.size(); index++) {
             Bullet bullet = bullets.get(index);
             bullet.Move();
-            if(!collisionDetector.isBulletCollide(bullet)){
+            if(collisionDetector.isBulletCollide(bullet)){
                 bullets.remove(index);
             }
         }

@@ -64,11 +64,13 @@ public class Game implements Runnable {
         new AnimationTimer() {
             Image background = new Image("resources/gameplay_background.png");
             Image wall = new Image("resources/wall_ordinary.png");
+            Image bird = new Image("resources/bird.png");
 
             @Override
             public void handle(long now) {
                 gc.drawImage(background, 0, 0);
                 DrawWalls(gc, wall);
+                gc.drawImage(bird,280,570);
                 DrawBullets(gc);
                 gc.drawImage(tank1.getImage(), tank1.getX(), tank1.getY());
                 if (hasTwoPlayers) {
