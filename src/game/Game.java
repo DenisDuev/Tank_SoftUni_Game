@@ -93,7 +93,7 @@ public class Game implements Runnable {
         for (int row = 0; row < MATRIX_ROWS; row++) {
             for (int col = 0; col < MATRIX_COLS; col++) {
                 if (matrix[row][col] != 0) {
-                    gc.drawImage(wall, col * 30, row * 30);
+                    gc.drawImage(wall, col * Constants.MATRIX_CELL_SIZE, row * Constants.MATRIX_CELL_SIZE);
                 }
             }
         }

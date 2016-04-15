@@ -20,14 +20,14 @@ public class CollisionDetector {
     public boolean shouldMove(Tank tank, int x, int y) {
         int tankX = tank.getX() + x;
         int tankY = tank.getY() + y;
-        if (tankX < 0 || tankX + Constants.TANK_SIZE > Constants.BOARD_SIZE || tankY < 0 || tankY + Constants.TANK_SIZE > Constants.BOARD_SIZE) {
+        if (tankX < 0 || tankX + Constants.TANK_SIZE + 2 > Constants.BOARD_SIZE || tankY < 0 || tankY + Constants.TANK_SIZE + 2 > Constants.BOARD_SIZE) {
             return false;
         }
 
-        if (matrix[tankY / 30][tankX / 30] != 0
-                || matrix[tankY / 30][tankX / 30 + 1] != 0
-                || matrix[tankY / 30 + 1][tankX / 30 + 1] != 0
-                || matrix[tankY / 30 + 1][tankX / 30] != 0
+        if (matrix[tankY / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] != 0
+                || matrix[tankY / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] != 0
+                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE ] != 0
+                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] != 0
                 ) {
             return false;
         }

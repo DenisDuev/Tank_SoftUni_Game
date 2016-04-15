@@ -3,15 +3,13 @@ package objects.Tanks;
 import constants.Constants;
 import game.CollisionDetector;
 import javafx.scene.image.Image;
+import objects.GameObject;
 
 /**
  * Created by Denis on 13.4.2016 �..
  */
-public class Tank {
-    private final int UP = 0;
-    private final int DOWN = 1;
-    private final int LEFT = 2;
-    private final int RIGHT = 3;
+public class Tank extends GameObject {
+
 
 
     private String name;
@@ -21,23 +19,19 @@ public class Tank {
     private Image leftImage;
     private Image rightImage;
     private Image currentImage;
-    private int direction;
+
     private CollisionDetector collisionDetector;
 
-    private int x;
-    private int y;
 
-    public Tank(String name, int health, int x, int y) {
+    public Tank(String name, int health, int x, int y)  {
+        super(x,y);
         this.name = name;
         this.health = health;
-        this.x = x;
-        this.y = y;
         this.upImage = new Image("resources/tanks/silver_tank/silver_tank_up.png");
         this.downImage = new Image("resources/tanks/silver_tank/silver_tank_down.png");
         this.leftImage = new Image("resources/tanks/silver_tank/silver_tank_left.png");
         this.rightImage = new Image("resources/tanks/silver_tank/silver_tank_right.png");
         this.currentImage = new Image("resources/tanks/silver_tank/silver_tank_up.png");
-        this.direction = UP;
     }
 
     public void move(int xAdd, int yAdd) {
@@ -110,4 +104,6 @@ public class Tank {
     public void setCollisionDetector(CollisionDetector collisionDetector) {
         this.collisionDetector = collisionDetector;
     }
+
+
 }

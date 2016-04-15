@@ -54,7 +54,7 @@ public class Main extends Application implements EventHandler {
         BorderPane borderPaneLayout = new BorderPane();
         Background background = new Background(
                                     new BackgroundImage(
-                                            new Image("resources/menu_background.png", Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, false, true),
+                                            new Image("resources/menu_background.png", Constants.WINDOWS_WIDTH + 10, Constants.WINDOWS_HEIGHT + 10, false, false),
                                                     BackgroundRepeat.NO_REPEAT,
                                                     BackgroundRepeat.NO_REPEAT,
                                                     BackgroundPosition.CENTER,
