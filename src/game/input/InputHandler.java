@@ -1,11 +1,10 @@
 package game.input;
 
+import game.CollisionDetector;
 import javafx.scene.Scene;
 import objects.Tanks.Tank;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Created by Denis on 13.4.2016 ã..
@@ -61,6 +60,7 @@ public class InputHandler {
         }
         if (hasTwoPlayers){
             if (this.input.contains("A")) {
+
                 this.tank2.move(-1, 0);
             } else if (this.input.contains("D")) {
                 this.tank2.move(1, 0);

@@ -1,9 +1,11 @@
 package objects.Tanks;
 
+import constants.Constants;
+import game.CollisionDetector;
 import javafx.scene.image.Image;
 
 /**
- * Created by Denis on 13.4.2016 ã..
+ * Created by Denis on 13.4.2016 ï¿½..
  */
 public class Tank {
     private final int UP = 0;
@@ -20,6 +22,7 @@ public class Tank {
     private Image rightImage;
     private Image currentImage;
     private int direction;
+    private CollisionDetector collisionDetector;
 
     private int x;
     private int y;
@@ -38,10 +41,12 @@ public class Tank {
     }
 
     public void move(int xAdd, int yAdd) {
-        //TODO check for collison
         checkDirection(xAdd, yAdd);
-        this.x += xAdd;
-        this.y += yAdd;
+
+        if (collisionDetector.shouldMove(this, xAdd, yAdd)){
+            this.x += xAdd;
+            this.y += yAdd;
+        }
     }
 
     private void checkDirection(int x, int y) {
@@ -100,5 +105,9 @@ public class Tank {
 
     public String getName() {
         return name;
+    }
+
+    public void setCollisionDetector(CollisionDetector collisionDetector) {
+        this.collisionDetector = collisionDetector;
     }
 }

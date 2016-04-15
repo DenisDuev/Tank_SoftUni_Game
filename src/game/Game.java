@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import objects.Tanks.Tank;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Game implements Runnable {
@@ -23,6 +25,7 @@ public class Game implements Runnable {
     private GraphicsContext gc;
     private static int[][] matrix = new int[MATRIX_ROWS][MATRIX_COLS];
     private boolean hasTwoPlayers;
+    private CollisionDetector collisionDetector;
 
 
     public Game(Stage stage, boolean hasTwoPlayers) {
@@ -40,8 +43,16 @@ public class Game implements Runnable {
 
         Tank tank1 = new Tank("Denis", 100, 50, 50);
         Tank tank2 = new Tank("Pesho", 300, 100, 100);
+        List<Tank> tanks = new ArrayList<>();
+        tanks.add(tank1);
+        tanks.add(tank2);
+        collisionDetector = new CollisionDetector(matrix,tanks);
+        tank1.setCollisionDetector(collisionDetector);
+        tank2.setCollisionDetector(collisionDetector);
+
         InitialiseMatrix();
         InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers);
+
         root.getChildren().add(canvas);
         stage.setScene(s);
 
@@ -72,8 +83,8 @@ public class Game implements Runnable {
         Random random = new Random();
         for (int row = 0; row < MATRIX_ROWS; row++) {
             for (int col = 0; col < MATRIX_COLS; col++) {
-                int randomNum = random.nextInt(2);
-                this.matrix[row][col] = randomNum;
+                int randomNum = random.nextInt(15);
+                this.matrix[row][col] = randomNum == 0 ? 1 : 0;
             }
         }
     }

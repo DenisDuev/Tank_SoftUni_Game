@@ -55,9 +55,9 @@ public class Main extends Application implements EventHandler {
         Background background = new Background(
                                     new BackgroundImage(
                                             new Image("resources/menu_background.png", Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, false, true),
-                                                    BackgroundRepeat.REPEAT,
                                                     BackgroundRepeat.NO_REPEAT,
-                                                    BackgroundPosition.DEFAULT,
+                                                    BackgroundRepeat.NO_REPEAT,
+                                                    BackgroundPosition.CENTER,
                                                     BackgroundSize.DEFAULT));
         borderPaneLayout.setBackground(background);
         borderPaneLayout.setCenter(centerMenu);
