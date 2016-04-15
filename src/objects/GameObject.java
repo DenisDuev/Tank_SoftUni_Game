@@ -1,5 +1,7 @@
 package objects;
 
+import javafx.scene.image.Image;
+
 /**
  * Created by Denis on 15.4.2016 ã..
  */
@@ -12,6 +14,11 @@ public class GameObject {
     protected int x;
     protected int y;
     protected int direction;
+    protected Image image;
+
+    public Image getImage() {
+        return image;
+    }
 
     public GameObject(int x, int y) {
         this.direction = UP;

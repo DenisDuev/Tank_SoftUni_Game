@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import objects.Boom;
 import objects.Bullet;
 import objects.Tanks.Tank;
 
@@ -28,6 +29,7 @@ public class Game implements Runnable {
     private boolean hasTwoPlayers;
     private CollisionDetector collisionDetector;
     private BulletHandler bulletHandler;
+    List<Boom> booms = new ArrayList<>();
 
 
     public Game(Stage stage, boolean hasTwoPlayers) {
@@ -46,6 +48,7 @@ public class Game implements Runnable {
         Tank tank1 = new Tank("Denis", 100, 50, 50);
         Tank tank2 = new Tank("Pesho", 300, 100, 100);
         List<Tank> tanks = new ArrayList<>();
+        booms = new ArrayList<>();
         tanks.add(tank1);
         tanks.add(tank2);
         collisionDetector = new CollisionDetector(matrix,tanks);
@@ -53,7 +56,7 @@ public class Game implements Runnable {
         tank2.setCollisionDetector(collisionDetector);
 
         InitialiseMatrix();
-        bulletHandler = new BulletHandler(collisionDetector);
+        bulletHandler = new BulletHandler(collisionDetector, booms);
         InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
 
         root.getChildren().add(canvas);
@@ -76,12 +79,24 @@ public class Game implements Runnable {
                 if (hasTwoPlayers) {
                     gc.drawImage(tank2.getImage(), tank2.getX(), tank2.getY());
                 }
+                DrawBooms(gc);
+
                 inputHandler.refresh();
 
             }
 
         }.start();
 
+    }
+
+    private void DrawBooms(GraphicsContext gc) {
+        for (int i = 0; i < booms.size(); i++) {
+            Boom boom = booms.get(i);
+            gc.drawImage(boom.getImage(), boom.getX(), boom.getY());
+            if (boom.decrementFrames()){
+                booms.remove(i);
+            }
+        }
     }
 
     private void DrawBullets(GraphicsContext gc) {
@@ -97,7 +112,7 @@ public class Game implements Runnable {
         for (int row = 0; row < MATRIX_ROWS; row++) {
             for (int col = 0; col < MATRIX_COLS; col++) {
                 int randomNum = random.nextInt(15);
-                this.matrix[row][col] = randomNum == 0 ? 1 : 0;
+                this.matrix[row][col] = randomNum == 0 ? 3 : 0;
             }
         }
     }

@@ -60,6 +60,17 @@ public class CollisionDetector {
             return true;
         }
 
+        if(matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] != 0){
+            matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE]--;
+            return true;
+        }
+
+        for (Tank tank : tanks) {
+            if (tank.getX() <= bulletX && bulletX <= tank.getX() + Constants.TANK_SIZE && tank.getY() <= bulletY && bulletY <= tank.getY() + Constants.TANK_SIZE){
+                return true;
+            }
+        }
+
         return false;
     }
 }
