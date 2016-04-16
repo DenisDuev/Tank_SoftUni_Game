@@ -1,10 +1,7 @@
 package game.input;
 
-import game.BulletHandler;
-import game.CollisionDetector;
+import game.ObjectHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import objects.Bullet;
 import objects.Tanks.Tank;
 
 import java.util.HashSet;
@@ -18,10 +15,10 @@ public class InputHandler {
     private Tank tank2;
     private HashSet<String> input;
     private boolean hasTwoPlayers;
-    private BulletHandler bulletHandler;
+    private ObjectHandler bulletHandler;
     private long lastSystemTime = System.nanoTime();
 
-    public InputHandler(Scene scene, Tank player1, Tank player2, boolean hasTwoPlayers, BulletHandler bulletHandler) {
+    public InputHandler(Scene scene, Tank player1, Tank player2, boolean hasTwoPlayers, ObjectHandler bulletHandler) {
         this.scene = scene;
         this.tank1 = player1;
         this.tank2 = player2;

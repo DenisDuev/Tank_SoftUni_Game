@@ -3,9 +3,6 @@ package main;
 import constants.Constants;
 import game.Game;
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventTarget;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -14,9 +11,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import map_editor.MapEditor;
 import objects.MenuButton;
 
-public class Main extends Application implements EventHandler {
+public class Main extends Application {
 
     Button onePlayerButton;
     Button twoPlayersButton;
@@ -26,7 +24,7 @@ public class Main extends Application implements EventHandler {
     Scene windows;
 
     @Override
-    public void start(Stage primaryStage)  throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         onePlayerButton = new MenuButton("1 Player");
@@ -37,12 +35,13 @@ public class Main extends Application implements EventHandler {
 
         onePlayerButton.setOnAction(c -> new Game(primaryStage, false).start());
         twoPlayersButton.setOnAction(b -> new Game(primaryStage, true).start());
-        mapEditorButton.setOnAction(this);
-        settingsButton.setOnAction(this);
-        creditsButton.setOnAction(this);
+        mapEditorButton.setOnAction(b -> new MapEditor(primaryStage).start());
+        //TODO make two more menu pages
+        //settingsButton.setOnAction(this);
+        //creditsButton.setOnAction(this);
 
         VBox centerMenu = new VBox();
-        centerMenu.setPadding(new Insets(110,325,110,325));
+        centerMenu.setPadding(new Insets(110, 325, 110, 325));
         centerMenu.setSpacing(10);
         centerMenu.getChildren().addAll(
                 onePlayerButton,
@@ -53,12 +52,12 @@ public class Main extends Application implements EventHandler {
 
         BorderPane borderPaneLayout = new BorderPane();
         Background background = new Background(
-                                    new BackgroundImage(
-                                            new Image("resources/menu_background.png", Constants.WINDOWS_WIDTH + 10, Constants.WINDOWS_HEIGHT + 10, false, false),
-                                                    BackgroundRepeat.NO_REPEAT,
-                                                    BackgroundRepeat.NO_REPEAT,
-                                                    BackgroundPosition.CENTER,
-                                                    BackgroundSize.DEFAULT));
+                new BackgroundImage(
+                        new Image("resources/menu_background.png", Constants.WINDOWS_WIDTH + 10, Constants.WINDOWS_HEIGHT + 10, false, false),
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        BackgroundSize.DEFAULT));
         borderPaneLayout.setBackground(background);
         borderPaneLayout.setCenter(centerMenu);
 
@@ -75,17 +74,5 @@ public class Main extends Application implements EventHandler {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    @Override
-    public void handle(Event event) {
-        EventTarget target = event.getTarget();
-        if (target == mapEditorButton) {
-            System.out.println("map edit btn");
-        } else if (target == settingsButton) {
-            System.out.println("settings btn");
-        } else if (target == creditsButton) {
-            System.out.println("credit btn");
-        }
     }
 }

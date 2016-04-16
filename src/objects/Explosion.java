@@ -5,12 +5,12 @@ import javafx.scene.image.Image;
 /**
  * Created by Denis on 15.4.2016 ã..
  */
-public class Boom extends GameObject {
+public class Explosion extends GameObject {
     private int frames;
 
-    public Boom(int x, int y) {
+    public Explosion(int x, int y) {
         super(x, y);
-        this.image = new Image("resources/boom.png");
+        this.image = new Image("resources/exploision.png");
         this.frames = 10;
     }
 

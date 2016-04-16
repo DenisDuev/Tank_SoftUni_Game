@@ -10,7 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import objects.Boom;
+import objects.Explosion;
 import objects.Bullet;
 import objects.Tanks.Tank;
 
@@ -18,18 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game implements Runnable {
-
-    private static final int MATRIX_ROWS = 20;
-    private static final int MATRIX_COLS = 20;
+public class Game{
 
     private Stage stage;
     private GraphicsContext gc;
-    private static int[][] matrix = new int[MATRIX_ROWS][MATRIX_COLS];
+    private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
     private boolean hasTwoPlayers;
     private CollisionDetector collisionDetector;
-    private BulletHandler bulletHandler;
-    List<Boom> booms = new ArrayList<>();
+    private ObjectHandler bulletHandler;
+    List<Explosion> booms = new ArrayList<>();
 
 
     public Game(Stage stage, boolean hasTwoPlayers) {
@@ -40,7 +37,7 @@ public class Game implements Runnable {
     public void start() {
         Group root = new Group();
 
-        final Canvas canvas = new Canvas(Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
+        final Canvas canvas = new Canvas(Constants.WINDOWS_HEIGHT, Constants.WINDOWS_HEIGHT);
         gc = canvas.getGraphicsContext2D();
         Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
 
@@ -56,7 +53,7 @@ public class Game implements Runnable {
         tank2.setCollisionDetector(collisionDetector);
 
         InitialiseMatrix();
-        bulletHandler = new BulletHandler(collisionDetector, booms);
+        bulletHandler = new ObjectHandler(collisionDetector, booms);
         InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
 
         root.getChildren().add(canvas);
@@ -71,6 +68,7 @@ public class Game implements Runnable {
 
             @Override
             public void handle(long now) {
+
                 gc.drawImage(background, 0, 0);
                 DrawWalls(gc, wall);
                 gc.drawImage(bird,280,570);
@@ -91,7 +89,7 @@ public class Game implements Runnable {
 
     private void DrawBooms(GraphicsContext gc) {
         for (int i = 0; i < booms.size(); i++) {
-            Boom boom = booms.get(i);
+            Explosion boom = booms.get(i);
             gc.drawImage(boom.getImage(), boom.getX(), boom.getY());
             if (boom.decrementFrames()){
                 booms.remove(i);
@@ -109,27 +107,21 @@ public class Game implements Runnable {
     //TODO fix matrix generation
     private void InitialiseMatrix() {
         Random random = new Random();
-        for (int row = 0; row < MATRIX_ROWS; row++) {
-            for (int col = 0; col < MATRIX_COLS; col++) {
-                int randomNum = random.nextInt(15);
+        for (int row = 0; row < Constants.MATRIX_ROWS; row++) {
+            for (int col = 0; col < Constants.MATRIX_COLS; col++) {
+                int randomNum = random.nextInt(10);
                 this.matrix[row][col] = randomNum == 0 ? 3 : 0;
             }
         }
     }
 
     private void DrawWalls(GraphicsContext gc, Image wall) {
-        for (int row = 0; row < MATRIX_ROWS; row++) {
-            for (int col = 0; col < MATRIX_COLS; col++) {
+        for (int row = 0; row < Constants.MATRIX_ROWS; row++) {
+            for (int col = 0; col < Constants.MATRIX_COLS; col++) {
                 if (matrix[row][col] != 0) {
                     gc.drawImage(wall, col * Constants.MATRIX_CELL_SIZE, row * Constants.MATRIX_CELL_SIZE);
                 }
             }
         }
     }
-
-    @Override
-    public void run() {
-
-    }
-
 }
