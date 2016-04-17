@@ -8,7 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import objects.Explosion;
 import objects.Bullet;
@@ -35,12 +40,14 @@ public class Game{
     }
 
     public void start() {
-        Group root = new Group();
+        BorderPane root = new BorderPane();
 
         final Canvas canvas = new Canvas(Constants.WINDOWS_HEIGHT, Constants.WINDOWS_HEIGHT);
+        root.setLeft(canvas);
         gc = canvas.getGraphicsContext2D();
         Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
-
+        VBox leftDisplay = new VBox(Constants.PADDING);
+        root.setRight(leftDisplay);
 
         Tank tank1 = new Tank("Denis", 100, 50, 50);
         Tank tank2 = new Tank("Pesho", 300, 100, 100);
@@ -56,7 +63,6 @@ public class Game{
         bulletHandler = new ObjectHandler(collisionDetector, booms);
         InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
 
-        root.getChildren().add(canvas);
         stage.setScene(s);
 
         stage.show();

@@ -3,9 +3,7 @@ package main;
 import constants.Constants;
 import game.Game;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -15,18 +13,15 @@ import map_editor.MapEditor;
 import objects.MenuButton;
 
 public class Main extends Application {
-
-    Button onePlayerButton;
-    Button twoPlayersButton;
-    Button mapEditorButton;
-    Button settingsButton;
-    Button creditsButton;
-    Scene windows;
+    private Button onePlayerButton;
+    private Button twoPlayersButton;
+    private Button mapEditorButton;
+    private Button settingsButton;
+    private Button creditsButton;
+    private Scene windows;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-
         onePlayerButton = new MenuButton("1 Player");
         twoPlayersButton = new MenuButton("2 Players");
         mapEditorButton = new MenuButton("Map Editor");
@@ -40,9 +35,9 @@ public class Main extends Application {
         //settingsButton.setOnAction(this);
         //creditsButton.setOnAction(this);
 
-        VBox centerMenu = new VBox();
-        centerMenu.setPadding(new Insets(110, 325, 110, 325));
-        centerMenu.setSpacing(10);
+        VBox centerMenu = new VBox(Constants.PADDING);
+        centerMenu.setPrefSize(Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
+        centerMenu.setPadding(new Insets(115, 335, 115, 335));
         centerMenu.getChildren().addAll(
                 onePlayerButton,
                 twoPlayersButton,
@@ -53,7 +48,10 @@ public class Main extends Application {
         BorderPane borderPaneLayout = new BorderPane();
         Background background = new Background(
                 new BackgroundImage(
-                        new Image("resources/menu_background.png", Constants.WINDOWS_WIDTH + 10, Constants.WINDOWS_HEIGHT + 10, false, false),
+                        new Image("resources/menu_background.png",
+                                Constants.WINDOWS_WIDTH + Constants.PADDING,
+                                Constants.WINDOWS_HEIGHT + Constants.PADDING,
+                                false, false),
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundPosition.CENTER,

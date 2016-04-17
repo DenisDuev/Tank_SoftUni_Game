@@ -2,19 +2,18 @@ package map_editor;
 
 import constants.Constants;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import objects.Tanks.Tank;
-
-import java.util.ArrayList;
-import java.util.List;
+import objects.MenuButton;
 
 /**
  * Created by Denis on 16.4.2016 ã..
@@ -23,32 +22,38 @@ public class MapEditor {
     private Stage stage;
     private GraphicsContext gc;
     private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
-    Image background = new Image("resources/gameplay_background.png");
-    Image wall = new Image("resources/wall_ordinary.png");
-    Image emptySell = new Image("resources/empty_cell.png");
+
+    private Image wall = new Image("resources/wall_ordinary.png");
+    private Image emptySell = new Image("resources/empty_cell.png");
 
     public MapEditor(Stage stage) {
         this.stage = stage;
     }
 
     public void start() {
-        Group root = new Group();
+        BorderPane root = new BorderPane();
 
         final Canvas canvas = new Canvas(Constants.WINDOWS_HEIGHT, Constants.WINDOWS_HEIGHT);
-        gc = canvas.getGraphicsContext2D();
+        root.setLeft(canvas);
+
         Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
-        s.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        gc = canvas.getGraphicsContext2D();
+
+        Button button = new MenuButton("SAVE");
+
+        VBox leftMenu = new VBox(Constants.PADDING);
+        leftMenu.getChildren().add(button);
+        leftMenu.setPrefSize(Constants.BOARD_PADDING, Constants.BOARD_SIZE);
+        leftMenu.setPadding(new Insets(10, 10, 30, 30));
+        root.setRight(leftMenu);
+
+        s.setOnMouseClicked(event -> {
+            if (event.getX() < Constants.BOARD_SIZE) {
                 matrix[(int) event.getX() / Constants.MATRIX_CELL_SIZE][(int) event.getY() / Constants.MATRIX_CELL_SIZE]++;
             }
         });
 
-        //InitialiseMatrix();
-
-        root.getChildren().add(canvas);
         stage.setScene(s);
-
         stage.show();
 
         new AnimationTimer() {
