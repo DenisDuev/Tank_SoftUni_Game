@@ -25,10 +25,10 @@ public class CollisionDetector {
             return false;
         }
 
-        if (matrix[tankY / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] != 0
-                || matrix[tankY / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] != 0
-                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE ] != 0
-                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] != 0
+        if (matrix[tankY / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] <= 11 && matrix[tankY / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] > 0
+                || matrix[tankY / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] <= 11 && matrix[tankY / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] > 0
+                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE ] <= 11 && matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE ] > 0
+                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] <= 11 && matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] > 0
                 ) {
             return false;
         }
@@ -60,7 +60,7 @@ public class CollisionDetector {
             return true;
         }
 
-        if(matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] != 0){
+        if(matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] <= 10 && matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] > 0){
             matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE]--;
             bullet.getParentTank().AddScoreWallShoot();
             return true;

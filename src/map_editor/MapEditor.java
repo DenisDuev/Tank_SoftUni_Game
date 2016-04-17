@@ -8,7 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,7 +22,7 @@ public class MapEditor {
     private GraphicsContext gc;
     private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
 
-    private Image wall = new Image("resources/wall_ordinary.png");
+    private Image wall = new Image("resources/walls/wall_ordinary.png");
     private Image emptySell = new Image("resources/empty_cell.png");
 
     public MapEditor(Stage stage) {
