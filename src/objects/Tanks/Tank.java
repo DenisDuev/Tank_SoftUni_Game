@@ -15,6 +15,7 @@ public class Tank extends GameObject {
 
     private String name;
     private int health;
+    private int score;
     private Image upImage;
     private Image downImage;
     private Image leftImage;
@@ -28,6 +29,7 @@ public class Tank extends GameObject {
         super(x,y);
         this.name = name;
         this.health = health;
+        this.score = 0;
         this.upImage = new Image("resources/tanks/silver_tank/silver_tank_up.png");
         this.downImage = new Image("resources/tanks/silver_tank/silver_tank_down.png");
         this.leftImage = new Image("resources/tanks/silver_tank/silver_tank_left.png");
@@ -100,8 +102,14 @@ public class Tank extends GameObject {
     }
 
     public Bullet spawnBullet(){
-        return new Bullet(this.x, this.y, this.direction);
+        return new Bullet(this.x, this.y, this.direction, this);
     }
 
+    public void AddScoreWallShoot(){
+        this.score += 100;
+    }
 
+    public int getScore() {
+        return score;
+    }
 }

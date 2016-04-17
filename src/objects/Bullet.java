@@ -2,6 +2,7 @@ package objects;
 
 import constants.Constants;
 import javafx.scene.image.Image;
+import objects.Tanks.Tank;
 
 /**
  * Created by Denis on 15.4.2016 ã..
@@ -14,11 +15,13 @@ public class Bullet extends GameObject {
     private int xVelocity;
     private int yVelocity;
     private Image image;
+    private Tank parentTank;
 
-    public Bullet(int x, int y, int direction) {
+    public Bullet(int x, int y, int direction, Tank parentTank) {
         super(x, y);
         this.direction = direction;
         this.setVelocitiesAndStartPoint();
+        this.parentTank = parentTank;
         SetImage();
     }
 
@@ -64,6 +67,10 @@ public class Bullet extends GameObject {
 
     public Image getImage() {
         return this.image;
+    }
+
+    public Tank getParentTank() {
+        return parentTank;
     }
 
     public void Move() {

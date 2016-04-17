@@ -62,6 +62,7 @@ public class CollisionDetector {
 
         if(matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] != 0){
             matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE]--;
+            bullet.getParentTank().AddScoreWallShoot();
             return true;
         }
 

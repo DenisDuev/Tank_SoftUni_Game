@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -46,7 +47,13 @@ public class Game{
         root.setLeft(canvas);
         gc = canvas.getGraphicsContext2D();
         Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
+
         VBox leftDisplay = new VBox(Constants.PADDING);
+        Label scoreTank1 = new Label("");
+        scoreTank1.setPrefSize(100,20);
+        Label scoreTank2 = new Label("");
+        scoreTank2.setPrefSize(100,20);
+        leftDisplay.getChildren().addAll(scoreTank1, scoreTank2);
         root.setRight(leftDisplay);
 
         Tank tank1 = new Tank("Denis", 100, 50, 50);
@@ -77,13 +84,15 @@ public class Game{
 
                 gc.drawImage(background, 0, 0);
                 DrawWalls(gc, wall);
-                gc.drawImage(bird,280,570);
+                //gc.drawImage(bird,280,570);
                 DrawBullets(gc);
                 gc.drawImage(tank1.getImage(), tank1.getX(), tank1.getY());
                 if (hasTwoPlayers) {
                     gc.drawImage(tank2.getImage(), tank2.getX(), tank2.getY());
+                    scoreTank2.setText(tank2.getName() + " " + Integer.toString(tank2.getScore()));
                 }
                 DrawBooms(gc);
+                scoreTank1.setText(tank1.getName() + " " + Integer.toString(tank1.getScore()));
 
                 inputHandler.refresh();
 
