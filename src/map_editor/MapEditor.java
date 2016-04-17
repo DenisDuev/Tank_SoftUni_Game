@@ -1,6 +1,8 @@
 package map_editor;
 
 import constants.Constants;
+import game.Game;
+import game.output.Drawer;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -21,9 +23,7 @@ public class MapEditor {
     private Stage stage;
     private GraphicsContext gc;
     private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
-
-    private Image wall = new Image("resources/walls/wall_ordinary.png");
-    private Image emptySell = new Image("resources/empty_cell.png");
+    private Image[] wallImages;
 
     public MapEditor(Stage stage) {
         this.stage = stage;
@@ -45,10 +45,11 @@ public class MapEditor {
         leftMenu.setPrefSize(Constants.BOARD_PADDING, Constants.BOARD_SIZE);
         leftMenu.setPadding(new Insets(10, 10, 30, 30));
         root.setRight(leftMenu);
-
+        initWallImages();
         s.setOnMouseClicked(event -> {
             if (event.getX() < Constants.BOARD_SIZE) {
-                matrix[(int) event.getX() / Constants.MATRIX_CELL_SIZE][(int) event.getY() / Constants.MATRIX_CELL_SIZE]++;
+                matrix[(int) event.getX() / Constants.MATRIX_CELL_SIZE][(int) event.getY() / Constants.MATRIX_CELL_SIZE] =
+                        ++matrix[(int) event.getX() / Constants.MATRIX_CELL_SIZE][(int) event.getY() / Constants.MATRIX_CELL_SIZE] % 5;
             }
         });
 
@@ -58,22 +59,19 @@ public class MapEditor {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                DrawMatrix(gc);
-
+                Drawer.drawCellsMapEdit(gc, wallImages, matrix);
             }
         }.start();
     }
 
-    private void DrawMatrix(GraphicsContext gc) {
 
-        for (int i = 0; i < Constants.MATRIX_ROWS; i++) {
-            for (int j = 0; j < Constants.MATRIX_COLS; j++) {
-                if (this.matrix[i][j] % 2 == 1) {
-                    gc.drawImage(wall, i * Constants.MATRIX_CELL_SIZE, j * Constants.MATRIX_CELL_SIZE);
-                } else {
-                    gc.drawImage(emptySell, i * Constants.MATRIX_CELL_SIZE, j * Constants.MATRIX_CELL_SIZE);
-                }
-            }
-        }
+    public void initWallImages() {
+        wallImages = new Image[5];
+        wallImages[0] = new Image("resources/empty_cell.png");
+        wallImages[1] = new Image("resources/walls/wall_ordinary.png");
+        wallImages[2] = new Image("resources/walls/wall_metal.png");
+        wallImages[3] = new Image("resources/walls/wall_water.png");
+        wallImages[4] = new Image("resources/walls/wall_green.png");
     }
 }
+

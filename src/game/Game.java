@@ -64,8 +64,8 @@ public class Game {
         tank1.setCollisionDetector(collisionDetector);
         tank2.setCollisionDetector(collisionDetector);
 
-        InitialiseMatrix();
-        InitWallImages();
+        initialiseMatrix();
+        initWallImages();
 
         bulletHandler = new ObjectHandler(collisionDetector, explosions);
         InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
@@ -83,13 +83,13 @@ public class Game {
 
                 gc.drawImage(background, 0, 0);
                 gc.drawImage(bird, 280, 570);
-                Drawer.DrawBullets(gc, bulletHandler);
                 Drawer.DrawTank(gc, tank1);
                 if (hasTwoPlayers) {
                     Drawer.DrawTank(gc, tank2);
                     scoreTank2.setText(tank2.getName() + " " + Integer.toString(tank2.getScore()));
                 }
                 Drawer.DrawWalls(gc, wallImages, matrix);
+                Drawer.DrawBullets(gc, bulletHandler);
                 Drawer.DrawExplosions(gc, explosions);
                 scoreTank1.setText(tank1.getName() + " " + Integer.toString(tank1.getScore()));
 
@@ -100,8 +100,7 @@ public class Game {
         }.start();
 
     }
-
-    private void InitWallImages() {
+    public void initWallImages() {
         wallImages = new Image[NUMBER_OF_IMAGES];
         wallImages[0] = new Image("resources/walls/wall_ordinary.png");
         wallImages[1] = new Image("resources/walls/wall_metal.png");
@@ -110,7 +109,7 @@ public class Game {
     }
 
     //TODO fix matrix generation
-    private void InitialiseMatrix() {
+    private void initialiseMatrix() {
         Random random = new Random();
         for (int row = 0; row < Constants.MATRIX_ROWS; row++) {
             for (int col = 0; col < Constants.MATRIX_COLS; col++) {
