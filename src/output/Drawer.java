@@ -1,4 +1,4 @@
-package game.output;
+package output;
 
 import constants.Constants;
 import game.ObjectHandler;
@@ -23,13 +23,13 @@ public class Drawer {
                 if (wallIndex == 12) {
                     //green
                     gc.drawImage(walls[3], col * Constants.MATRIX_CELL_SIZE, row * Constants.MATRIX_CELL_SIZE);
-                } else if (wallIndex == 11){
+                } else if (wallIndex == 11) {
                     //water
                     gc.drawImage(walls[2], col * Constants.MATRIX_CELL_SIZE, row * Constants.MATRIX_CELL_SIZE);
-                } else if (wallIndex < 3 && wallIndex > 0){
+                } else if (wallIndex <= 3 && wallIndex > 0) {
                     //ordinary
                     gc.drawImage(walls[0], col * Constants.MATRIX_CELL_SIZE, row * Constants.MATRIX_CELL_SIZE);
-                } else if (wallIndex <= 10 && wallIndex > 0){
+                } else if (wallIndex <= 10 && wallIndex > 0) {
                     //metal
                     gc.drawImage(walls[1], col * Constants.MATRIX_CELL_SIZE, row * Constants.MATRIX_CELL_SIZE);
                 }
@@ -37,20 +37,20 @@ public class Drawer {
         }
     }
 
-    public static void drawCellsMapEdit(GraphicsContext graphicsContext, Image[] walls, int[][] matrix){
+    public static void drawCellsMapEdit(GraphicsContext graphicsContext, Image[] walls, int[][] matrix) {
         for (int row = 0; row < Constants.MATRIX_ROWS; row++) {
             for (int col = 0; col < Constants.MATRIX_COLS; col++) {
-                graphicsContext.drawImage(walls[matrix[row][col]], row * Constants.MATRIX_CELL_SIZE, col *  Constants.MATRIX_CELL_SIZE);
+                graphicsContext.drawImage(walls[matrix[row][col]], col * Constants.MATRIX_CELL_SIZE, row * Constants.MATRIX_CELL_SIZE);
             }
         }
-        graphicsContext.drawImage(new Image("resources/bird.png"),  9 * Constants.MATRIX_CELL_SIZE, 19 * Constants.MATRIX_CELL_SIZE);
+        graphicsContext.drawImage(new Image("resources/bird.png"), 9 * Constants.MATRIX_CELL_SIZE, 19 * Constants.MATRIX_CELL_SIZE);
     }
 
     public static void DrawExplosions(GraphicsContext gc, List<Explosion> explosions) {
         for (int i = 0; i < explosions.size(); i++) {
             Explosion explosion = explosions.get(i);
             gc.drawImage(explosion.getImage(), explosion.getX(), explosion.getY());
-            if (explosion.decrementFrames()){
+            if (explosion.decrementFrames()) {
                 explosions.remove(i);
             }
         }
@@ -63,7 +63,7 @@ public class Drawer {
         }
     }
 
-    public static void  DrawTank(GraphicsContext graphicsContext, Tank tank){
+    public static void DrawTank(GraphicsContext graphicsContext, Tank tank) {
         graphicsContext.drawImage(tank.getImage(), tank.getX(), tank.getY());
     }
 }

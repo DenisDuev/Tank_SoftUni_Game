@@ -1,8 +1,9 @@
 package game;
 
 import constants.Constants;
-import game.input.InputHandler;
-import game.output.Drawer;
+import input.InputHandler;
+import input.MapReader;
+import output.Drawer;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -15,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import objects.Explosion;
 import objects.Tanks.Tank;
+import output.MapLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +27,12 @@ public class Game {
 
     private Stage stage;
     private GraphicsContext gc;
-    private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
     private boolean hasTwoPlayers;
-    private CollisionDetector collisionDetector;
     private ObjectHandler bulletHandler;
-    List<Explosion> explosions = new ArrayList<>();
-    Image[] wallImages;
+    private List<Explosion> explosions = new ArrayList<>();
+    private Image[] wallImages;
+    private MapLevel level;
+    private int[][] matrix;
 
 
     public Game(Stage stage, boolean hasTwoPlayers) {
@@ -54,19 +56,22 @@ public class Game {
         leftDisplay.getChildren().addAll(scoreTank1, scoreTank2);
         root.setRight(leftDisplay);
 
-        Tank tank1 = new Tank("Denis", 100, 50, 50);
-        Tank tank2 = new Tank("Pesho", 300, 100, 100);
+        this.level = MapReader.readMap("maps//firstMap.map");
+        this.matrix = level.getMatrix();
+
+
+        Tank tank1 = new Tank("Denis", 100, level.getFirstPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getFirstPlayerRow() * Constants.MATRIX_CELL_SIZE);
+        Tank tank2 = new Tank("Pesho", 300, level.getSecondPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getSecondPlayerRow() * Constants.MATRIX_CELL_SIZE);
         List<Tank> tanks = new ArrayList<>();
         explosions = new ArrayList<>();
         tanks.add(tank1);
         tanks.add(tank2);
-        collisionDetector = new CollisionDetector(matrix, tanks);
+        CollisionDetector collisionDetector = new CollisionDetector(matrix, tanks);
         tank1.setCollisionDetector(collisionDetector);
         tank2.setCollisionDetector(collisionDetector);
 
-        initialiseMatrix();
-        initWallImages();
 
+        initWallImages();
         bulletHandler = new ObjectHandler(collisionDetector, explosions);
         InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
 

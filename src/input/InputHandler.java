@@ -1,4 +1,4 @@
-package game.input;
+package input;
 
 import game.ObjectHandler;
 import javafx.scene.Scene;
