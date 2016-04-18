@@ -28,8 +28,8 @@ public class Main extends Application {
         settingsButton = new MenuButton("Settings");
         creditsButton = new MenuButton("Credits");
 
-        onePlayerButton.setOnAction(c -> new Game(primaryStage, false).start());
-        twoPlayersButton.setOnAction(b -> new Game(primaryStage, true).start());
+        onePlayerButton.setOnAction(c -> new Game(primaryStage, windows, false).start());
+        twoPlayersButton.setOnAction(b -> new Game(primaryStage, windows, true).start());
         mapEditorButton.setOnAction(b -> new MapEditor(primaryStage).start());
         //TODO make two more menu pages
         //settingsButton.setOnAction(this);

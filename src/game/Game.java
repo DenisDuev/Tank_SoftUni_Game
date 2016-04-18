@@ -3,6 +3,8 @@ package game;
 import constants.Constants;
 import input.InputHandler;
 import input.MapReader;
+import javafx.scene.control.Button;
+import objects.MenuButton;
 import output.Drawer;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
@@ -26,6 +28,7 @@ public class Game {
     private static final int NUMBER_OF_IMAGES = 4;
 
     private Stage stage;
+    private Scene mainMenuScene;
     private GraphicsContext gc;
     private boolean hasTwoPlayers;
     private ObjectHandler bulletHandler;
@@ -35,9 +38,10 @@ public class Game {
     private int[][] matrix;
 
 
-    public Game(Stage stage, boolean hasTwoPlayers) {
+    public Game(Stage stage, Scene mainMenuScene, boolean hasTwoPlayers) {
         this.stage = stage;
         this.hasTwoPlayers = hasTwoPlayers;
+        this.mainMenuScene = mainMenuScene;
     }
 
     public void start() {
@@ -49,11 +53,16 @@ public class Game {
         Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
 
         VBox leftDisplay = new VBox(Constants.PADDING);
+        Button backButton = new MenuButton("Back");
+        backButton.setOnMouseClicked(b -> {
+            stage.setScene(mainMenuScene);
+            stage.show();
+        });
         Label scoreTank1 = new Label("");
         scoreTank1.setPrefSize(100, 20);
         Label scoreTank2 = new Label("");
         scoreTank2.setPrefSize(100, 20);
-        leftDisplay.getChildren().addAll(scoreTank1, scoreTank2);
+        leftDisplay.getChildren().addAll(backButton, scoreTank1, scoreTank2);
         root.setRight(leftDisplay);
 
         this.level = MapReader.readMap("maps//firstMap.map");
@@ -87,7 +96,7 @@ public class Game {
             public void handle(long now) {
 
                 gc.drawImage(background, 0, 0);
-                gc.drawImage(bird, 280, 570);
+                gc.drawImage(bird, 270, 570);
                 Drawer.DrawTank(gc, tank1);
                 if (hasTwoPlayers) {
                     Drawer.DrawTank(gc, tank2);
@@ -105,6 +114,7 @@ public class Game {
         }.start();
 
     }
+
     public void initWallImages() {
         wallImages = new Image[NUMBER_OF_IMAGES];
         wallImages[0] = new Image("resources/walls/wall_ordinary.png");
@@ -120,7 +130,7 @@ public class Game {
             for (int col = 0; col < Constants.MATRIX_COLS; col++) {
                 int randomNum = random.nextInt(13);
                 if (col % 3 == 0)
-                this.matrix[row][col] = randomNum;
+                    this.matrix[row][col] = randomNum;
             }
         }
     }

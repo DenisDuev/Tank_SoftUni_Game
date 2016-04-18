@@ -78,7 +78,7 @@ public class InputHandler {
             } else if (this.input.contains("S")) {
                 this.tank2.move(0, 1);
             }
-            if (this.input.contains("SPACE") && elapsedSystemTime > 6){
+            if (this.input.contains("Q") && elapsedSystemTime > 6){
                 this.bulletHandler.AddBullet(tank2.spawnBullet());
                 this.lastSystemTime = currentSystemTime;
             }
