@@ -1,0 +1,52 @@
+package objects.Tanks;
+
+import javafx.scene.image.Image;
+
+import java.util.Random;
+
+/**
+ * Created by Denis on 19.4.2016 ã..
+ */
+public class EnemyTank extends Tank {
+    public EnemyTank(String name, int health, int x, int y) {
+        super(name, health, x, y);
+        this.direction = DOWN;
+    }
+
+    @Override
+    protected void initImages() {
+        this.upImage = new Image("resources/tanks/green_tank/green_tank_up.png");
+        this.downImage = new Image("resources/tanks/green_tank/green_tank_down.png");
+        this.leftImage = new Image("resources/tanks/green_tank/green_tank_left.png");
+        this.rightImage = new Image("resources/tanks/green_tank/green_tank_right.png");
+        this.currentImage = new Image("resources/tanks/green_tank/green_tank_down.png");
+    }
+
+    public void moveEnemy(){
+        int xChange = 0;
+        int yChange = 0;
+        switch (this.direction){
+            case UP:
+                yChange--;
+                break;
+            case DOWN:
+                yChange++;
+                break;
+            case LEFT:
+                xChange--;
+                break;
+            case RIGHT:
+                xChange++;
+                break;
+        }
+        changeImageDir(this.direction);
+        if (collisionDetector.shouldMove(this, xChange, yChange)){
+            this.x += xChange;
+            this.y += yChange;
+        } else {
+            Random random = new Random();
+            this.direction = random.nextInt(4);
+        }
+    }
+}
+

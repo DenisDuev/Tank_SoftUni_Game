@@ -3,8 +3,10 @@ package game;
 import constants.Constants;
 import input.InputHandler;
 import input.MapReader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import objects.MenuButton;
+import objects.Tanks.EnemyTank;
 import output.Drawer;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
@@ -37,12 +39,17 @@ public class Game {
     private Image[] wallImages;
     private MapLevel level;
     private int[][] matrix;
+    private List<EnemyTank> enemyTanks;
+    private CollisionDetector collisionDetector;
+
+    private long lastTime;
 
 
     public Game(Stage stage, Scene mainMenuScene, boolean hasTwoPlayers) {
         this.stage = stage;
         this.hasTwoPlayers = hasTwoPlayers;
         this.mainMenuScene = mainMenuScene;
+        this.enemyTanks = new ArrayList<>();
     }
 
     public void start() {
@@ -68,7 +75,8 @@ public class Game {
         Label scoreTank2 = new Label("");
         scoreTank2.setPrefSize(100, 20);
         leftDisplay.getChildren().addAll(backButton, scoreTank1, scoreTank2);
-        root.setRight(leftDisplay);
+        leftDisplay.setAlignment(Pos.CENTER);
+        root.setCenter(leftDisplay);
 
         this.level = MapReader.readMap("maps//firstMap.map");
         this.matrix = level.getMatrix();
@@ -80,7 +88,7 @@ public class Game {
         explosions = new ArrayList<>();
         tanks.add(tank1);
         tanks.add(tank2);
-        CollisionDetector collisionDetector = new CollisionDetector(matrix, tanks);
+        collisionDetector = new CollisionDetector(matrix, tanks);
         tank1.setCollisionDetector(collisionDetector);
         tank2.setCollisionDetector(collisionDetector);
 
@@ -99,9 +107,9 @@ public class Game {
 
             @Override
             public void handle(long now) {
-
                 gc.drawImage(background, 0, 0);
                 gc.drawImage(bird, 270, 570);
+                SpawnEnemyTanks(now, gc);
                 Drawer.DrawTank(gc, tank1);
                 if (hasTwoPlayers) {
                     Drawer.DrawTank(gc, tank2);
@@ -117,6 +125,21 @@ public class Game {
             }
 
         }.start();
+
+    }
+
+    private void SpawnEnemyTanks(long now, GraphicsContext gc) {
+        if ((now - this.lastTime)/1_000_000_00.0 > 80){
+            EnemyTank enemyTank = new EnemyTank("Tank",100,30,0);
+            enemyTank.setCollisionDetector(this.collisionDetector);
+            enemyTanks.add(enemyTank);
+            this.lastTime = now;
+        }
+
+        for (EnemyTank enemyTank : enemyTanks) {
+            enemyTank.moveEnemy();
+            gc.drawImage(enemyTank.getImage(), enemyTank.getX(), enemyTank.getY());
+        }
 
     }
 
@@ -136,18 +159,4 @@ public class Game {
         wallImages[2] = new Image("resources/walls/wall_water.png");
         wallImages[3] = new Image("resources/walls/wall_green.png");
     }
-
-    //TODO fix matrix generation
-    private void initialiseMatrix() {
-        Random random = new Random();
-        for (int row = 0; row < Constants.MATRIX_ROWS; row++) {
-            for (int col = 0; col < Constants.MATRIX_COLS; col++) {
-                int randomNum = random.nextInt(13);
-                if (col % 3 == 0)
-                    this.matrix[row][col] = randomNum;
-            }
-        }
-    }
-
-
 }

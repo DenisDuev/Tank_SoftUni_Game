@@ -1,6 +1,5 @@
 package objects.Tanks;
 
-import constants.Constants;
 import game.CollisionDetector;
 import javafx.scene.image.Image;
 import objects.Bullet;
@@ -16,13 +15,13 @@ public class Tank extends GameObject {
     private String name;
     private int health;
     private int score;
-    private Image upImage;
-    private Image downImage;
-    private Image leftImage;
-    private Image rightImage;
-    private Image currentImage;
+    protected Image upImage;
+    protected Image downImage;
+    protected Image leftImage;
+    protected Image rightImage;
+    protected Image currentImage;
 
-    private CollisionDetector collisionDetector;
+    protected CollisionDetector collisionDetector;
 
 
     public Tank(String name, int health, int x, int y)  {
@@ -30,6 +29,10 @@ public class Tank extends GameObject {
         this.name = name;
         this.health = health;
         this.score = 0;
+        initImages();
+    }
+
+    protected void initImages() {
         this.upImage = new Image("resources/tanks/silver_tank/silver_tank_up.png");
         this.downImage = new Image("resources/tanks/silver_tank/silver_tank_down.png");
         this.leftImage = new Image("resources/tanks/silver_tank/silver_tank_left.png");
@@ -46,7 +49,7 @@ public class Tank extends GameObject {
         }
     }
 
-    private void checkDirection(int x, int y) {
+    protected void checkDirection(int x, int y) {
         int currentDir = 0;
         if (x != 0) {
             if (x == 1) {
@@ -61,30 +64,34 @@ public class Tank extends GameObject {
                 currentDir = UP;
             }
         }
-        ChangeDirection(currentDir);
+        changeDirection(currentDir);
 
     }
 
-    private void ChangeDirection(int currentDirection) {
+    protected void changeDirection(int currentDirection) {
         if (this.direction != currentDirection) {
-            switch (currentDirection) {
-                case UP:
-                    this.currentImage = this.upImage;
-                    this.direction = UP;
-                    break;
-                case DOWN:
-                    this.currentImage = this.downImage;
-                    this.direction = DOWN;
-                    break;
-                case LEFT:
-                    this.currentImage = this.leftImage;
-                    this.direction = LEFT;
-                    break;
-                case RIGHT:
-                    this.currentImage = this.rightImage;
-                    this.direction = RIGHT;
-                    break;
-            }
+            changeImageDir(currentDirection);
+        }
+    }
+
+    protected void changeImageDir(int currentDirection) {
+        switch (currentDirection) {
+            case UP:
+                this.currentImage = this.upImage;
+                this.direction = UP;
+                break;
+            case DOWN:
+                this.currentImage = this.downImage;
+                this.direction = DOWN;
+                break;
+            case LEFT:
+                this.currentImage = this.leftImage;
+                this.direction = LEFT;
+                break;
+            case RIGHT:
+                this.currentImage = this.rightImage;
+                this.direction = RIGHT;
+                break;
         }
     }
 
