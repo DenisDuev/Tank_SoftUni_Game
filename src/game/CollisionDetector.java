@@ -33,7 +33,11 @@ public class CollisionDetector {
             return false;
         }
 
-        for (Tank otherTank : tanks) {
+        for (int i = 0; i < tanks.size(); i++) {
+            Tank otherTank = tanks.get(i);
+            if (!otherTank.isAlive()){
+                tanks.remove(i);
+            }
             //check the tanks by reference, if they are equal, we don't have to check for collision
             if (tank == otherTank) {
                 continue;
@@ -68,6 +72,7 @@ public class CollisionDetector {
 
         for (Tank tank : tanks) {
             if (tank.getX() <= bulletX && bulletX <= tank.getX() + Constants.TANK_SIZE && tank.getY() <= bulletY && bulletY <= tank.getY() + Constants.TANK_SIZE){
+                tank.decrementHealth();
                 return true;
             }
         }

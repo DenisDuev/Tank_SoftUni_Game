@@ -49,25 +49,28 @@ public class InputHandler {
 
         double elapsedSystemTime = (currentSystemTime - lastSystemTime) / 1_000_000_00.0;
 
-        if (this.input.contains("LEFT")) {
-            this.tank1.move(-1, 0);
-        } else
-        if (this.input.contains("RIGHT")) {
-            this.tank1.move(1, 0);
-        } else
-        if (this.input.contains("UP")) {
-            this.tank1.move(0, -1);
-        }else
-        if (this.input.contains("DOWN")) {
-            this.tank1.move(0, 1);
+        if (this.tank1.isAlive()){
+            if (this.input.contains("LEFT")) {
+                this.tank1.move(-1, 0);
+            } else
+            if (this.input.contains("RIGHT")) {
+                this.tank1.move(1, 0);
+            } else
+            if (this.input.contains("UP")) {
+                this.tank1.move(0, -1);
+            }else
+            if (this.input.contains("DOWN")) {
+                this.tank1.move(0, 1);
+            }
+
+            if (this.input.contains("ENTER") && elapsedSystemTime > 6) {
+                bulletHandler.AddBullet(tank1.spawnBullet());
+                this.lastSystemTime = currentSystemTime;
+
+            }
         }
 
-        if (this.input.contains("ENTER") && elapsedSystemTime > 6) {
-            bulletHandler.AddBullet(tank1.spawnBullet());
-            this.lastSystemTime = currentSystemTime;
-
-        }
-        if (hasTwoPlayers){
+        if (hasTwoPlayers && this.tank2.isAlive()){
             if (this.input.contains("A")) {
 
                 this.tank2.move(-1, 0);

@@ -9,12 +9,10 @@ import objects.GameObject;
  * Created by Denis on 13.4.2016 �..
  */
 public class Tank extends GameObject {
-
-
-
     private String name;
     private int health;
     private int score;
+    private boolean isAlive;
     protected Image upImage;
     protected Image downImage;
     protected Image leftImage;
@@ -29,7 +27,12 @@ public class Tank extends GameObject {
         this.name = name;
         this.health = health;
         this.score = 0;
+        this.isAlive = true;
         initImages();
+    }
+
+    public boolean isAlive(){
+        return this.isAlive;
     }
 
     protected void initImages() {
@@ -41,11 +44,13 @@ public class Tank extends GameObject {
     }
 
     public void move(int xAdd, int yAdd) {
-        checkDirection(xAdd, yAdd);
+        if (this.isAlive()){
+            checkDirection(xAdd, yAdd);
 
-        if (collisionDetector.shouldMove(this, xAdd, yAdd)){
-            this.x += xAdd;
-            this.y += yAdd;
+            if (collisionDetector.shouldMove(this, xAdd, yAdd)){
+                this.x += xAdd;
+                this.y += yAdd;
+            }
         }
     }
 
@@ -118,5 +123,12 @@ public class Tank extends GameObject {
 
     public int getScore() {
         return score;
+    }
+
+    public void decrementHealth(){
+        this.health -= 30;
+        if (this.health <= 0){
+            this.isAlive = false;
+        }
     }
 }

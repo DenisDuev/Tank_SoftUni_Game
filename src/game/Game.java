@@ -25,7 +25,6 @@ import utilities.ExitBox;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Game {
     private static final int NUMBER_OF_IMAGES = 4;
@@ -41,15 +40,18 @@ public class Game {
     private int[][] matrix;
     private List<EnemyTank> enemyTanks;
     private CollisionDetector collisionDetector;
+    private List<Tank> tanks;
 
-    private long lastTime;
-
+    private long lastTimeSpawn;
 
     public Game(Stage stage, Scene mainMenuScene, boolean hasTwoPlayers) {
         this.stage = stage;
         this.hasTwoPlayers = hasTwoPlayers;
         this.mainMenuScene = mainMenuScene;
         this.enemyTanks = new ArrayList<>();
+        this.tanks = new ArrayList<>();
+        this.explosions = new ArrayList<>();
+
     }
 
     public void start() {
@@ -84,8 +86,7 @@ public class Game {
 
         Tank tank1 = new Tank("Denis", 100, level.getFirstPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getFirstPlayerRow() * Constants.MATRIX_CELL_SIZE);
         Tank tank2 = new Tank("Pesho", 300, level.getSecondPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getSecondPlayerRow() * Constants.MATRIX_CELL_SIZE);
-        List<Tank> tanks = new ArrayList<>();
-        explosions = new ArrayList<>();
+
         tanks.add(tank1);
         tanks.add(tank2);
         collisionDetector = new CollisionDetector(matrix, tanks);
@@ -129,16 +130,37 @@ public class Game {
     }
 
     private void SpawnEnemyTanks(long now, GraphicsContext gc) {
-        if ((now - this.lastTime)/1_000_000_00.0 > 80){
-            EnemyTank enemyTank = new EnemyTank("Tank",100,30,0);
-            enemyTank.setCollisionDetector(this.collisionDetector);
-            enemyTanks.add(enemyTank);
-            this.lastTime = now;
+        if ((now - this.lastTimeSpawn) / 1_000_000_00.0 > 80) {
+            boolean isReadyToBeSpawn = true;
+            for (int i = 0; i < enemyTanks.size(); i++) {
+                EnemyTank tempTank = enemyTanks.get(i);
+                if (tempTank.getX() >= 30 && tempTank.getX() <= 60 && tempTank.getY() <= 30 ){
+                    isReadyToBeSpawn = false;
+                }
+
+            }
+            if (isReadyToBeSpawn){
+                EnemyTank enemyTank = new EnemyTank("Tank", 100, 30, 0);
+                enemyTank.setCollisionDetector(this.collisionDetector);
+                enemyTanks.add(enemyTank);
+                tanks.add(enemyTank);
+                this.lastTimeSpawn = now;
+            }
         }
 
-        for (EnemyTank enemyTank : enemyTanks) {
-            enemyTank.moveEnemy();
-            gc.drawImage(enemyTank.getImage(), enemyTank.getX(), enemyTank.getY());
+        for (int i = 0;i < enemyTanks.size(); i++) {
+            EnemyTank enemyTank = enemyTanks.get(i);
+            if (enemyTank.isAlive()){
+                Drawer.DrawTank(gc, enemyTank);
+                if (enemyTank.canShootBullet(now)) {
+                    this.bulletHandler.AddBullet(enemyTank.spawnBullet());
+                }
+                enemyTank.moveEnemy();
+            } else {
+                enemyTanks.remove(i);
+            }
+
+
         }
 
     }

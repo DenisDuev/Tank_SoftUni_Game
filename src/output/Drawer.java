@@ -64,6 +64,8 @@ public class Drawer {
     }
 
     public static void DrawTank(GraphicsContext graphicsContext, Tank tank) {
-        graphicsContext.drawImage(tank.getImage(), tank.getX(), tank.getY());
+        if (tank.isAlive()){
+            graphicsContext.drawImage(tank.getImage(), tank.getX(), tank.getY());
+        }
     }
 }

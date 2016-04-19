@@ -12,6 +12,7 @@ public class Explosion extends GameObject {
         super(x, y);
         this.image = new Image("resources/exploision.png");
         this.frames = 10;
+
     }
 
     public boolean decrementFrames() {
