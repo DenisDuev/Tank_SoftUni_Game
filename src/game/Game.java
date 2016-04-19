@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import objects.Explosion;
 import objects.Tanks.Tank;
 import output.MapLevel;
+import utilities.ExitBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,10 @@ public class Game {
         backButton.setOnMouseClicked(b -> {
             stage.setScene(mainMenuScene);
             stage.show();
+        });
+        stage.setOnCloseRequest(e -> {
+            e.consume();
+            closeProgram();
         });
         Label scoreTank1 = new Label("");
         scoreTank1.setPrefSize(100, 20);
@@ -113,6 +118,15 @@ public class Game {
 
         }.start();
 
+    }
+
+    private void closeProgram() {
+        ExitBox exitBox = new ExitBox(300, 100, "Exit");
+        boolean isClosing = exitBox.display("Are you sure you want to close");
+        if (isClosing) {
+            //TODO save score before leaving
+            stage.close();
+        }
     }
 
     public void initWallImages() {

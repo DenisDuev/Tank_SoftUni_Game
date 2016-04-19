@@ -1,6 +1,7 @@
 package map_editor;
 
 import constants.Constants;
+import javafx.geometry.Pos;
 import output.Drawer;
 import output.MapWriter;
 import javafx.animation.AnimationTimer;
@@ -16,6 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import objects.MenuButton;
+import utilities.AlertBox;
+import utilities.ExitBox;
 
 /**
  * Created by Denis on 16.4.2016 ã..
@@ -26,9 +29,11 @@ public class MapEditor {
     private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
     private Image[] wallImages;
     private TextField textField;
+    private Scene mainMenuScene;
 
-    public MapEditor(Stage stage) {
+    public MapEditor(Stage stage, Scene mainMenuScene) {
         this.stage = stage;
+        this.mainMenuScene = mainMenuScene;
     }
 
     public void start() {
@@ -44,11 +49,23 @@ public class MapEditor {
         textField = new TextField();
 
         button.setOnAction(b -> saveMap());
+        stage.setOnCloseRequest(e -> {
+            e.consume();
+            closeProgram();
+        });
+        Button backButton = new MenuButton("Back");
+        backButton.setOnMouseClicked(b -> {
+            stage.setScene(mainMenuScene);
+            stage.show();
+        });
+
         VBox leftMenu = new VBox(Constants.PADDING);
-        leftMenu.getChildren().addAll(button, textField);
+        leftMenu.setAlignment(Pos.CENTER);
+        leftMenu.getChildren().addAll(backButton, button, textField);
         leftMenu.setPrefSize(Constants.BOARD_PADDING, Constants.BOARD_SIZE);
         leftMenu.setPadding(new Insets(10, 10, 30, 30));
-        root.setRight(leftMenu);
+        root.setCenter(leftMenu);
+
         initWallImages();
         s.setOnMouseClicked(event -> {
             if (event.getX() < Constants.BOARD_SIZE) {
@@ -68,12 +85,13 @@ public class MapEditor {
         }.start();
     }
 
-    private void saveMap(){
+    private void saveMap() {
         String mapName = textField.getText();
-        if (MapWriter.addMap(matrix, mapName)){
-            textField.setText("Map saved");
+        AlertBox alertBox = new AlertBox(300, 100, "Tank");
+        if (MapWriter.addMap(matrix, mapName)) {
+            alertBox.display("Your map is saved");
         } else {
-            textField.setText("enter valid name");
+            alertBox.display("Please enter valid map name");
         }
     }
 
@@ -84,6 +102,14 @@ public class MapEditor {
         wallImages[2] = new Image("resources/walls/wall_metal.png");
         wallImages[3] = new Image("resources/walls/wall_water.png");
         wallImages[4] = new Image("resources/walls/wall_green.png");
+    }
+
+    private void closeProgram() {
+        ExitBox exitBox = new ExitBox(300, 100, "Exit");
+        boolean isClosing = exitBox.display("Are you sure you want to close");
+        if (isClosing) {
+            stage.close();
+        }
     }
 }
 

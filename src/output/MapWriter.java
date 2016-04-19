@@ -3,13 +3,17 @@ package output;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 
 /**
  * Created by Denis on 18.4.2016 �..
  */
 public class MapWriter {
     public static boolean addMap(int[][] matrix, String mapName){
-        //TODO check for string correctness
+        if (Objects.equals(mapName, "")){
+            return false;
+        }
+        //TODO check with existing maps
         System.out.println("saving...");
         MapLevel mapLevel = new MapLevel(matrix, mapName);
         String path = "maps//" + mapName + ".map";
