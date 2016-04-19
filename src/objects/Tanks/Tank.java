@@ -1,5 +1,6 @@
 package objects.Tanks;
 
+import constants.Constants;
 import game.CollisionDetector;
 import javafx.scene.image.Image;
 import objects.Bullet;
@@ -117,7 +118,10 @@ public class Tank extends GameObject {
         return new Bullet(this.x, this.y, this.direction, this);
     }
 
-    public void AddScoreWallShoot(){
+    public void addScoreWallShoot(){
+        this.score += 10;
+    }
+    public void addScoreTankShoot(){
         this.score += 100;
     }
 
@@ -130,5 +134,13 @@ public class Tank extends GameObject {
         if (this.health <= 0){
             this.isAlive = false;
         }
+    }
+
+    public void goToNextLevel(int x, int y){
+        this.health = Constants.TANK_START_HEALTH;
+        this.x = x;
+        this.y = y;
+        this.direction = UP;
+        changeImageDir(this.direction);
     }
 }

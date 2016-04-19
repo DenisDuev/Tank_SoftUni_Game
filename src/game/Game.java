@@ -2,6 +2,7 @@ package game;
 
 import constants.Constants;
 import input.InputHandler;
+import input.MapLoader;
 import input.MapReader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -41,6 +42,14 @@ public class Game {
     private List<EnemyTank> enemyTanks;
     private CollisionDetector collisionDetector;
     private List<Tank> tanks;
+    private int numberOfEnemiesToBeSpawn = 20;
+    private int spawnedEnemies;
+    private MapLoader mapLoader;
+    private InputHandler inputHandler;
+    private Scene scene;
+
+    private Tank tank1;
+    private Tank tank2;
 
     private long lastTimeSpawn;
 
@@ -51,7 +60,7 @@ public class Game {
         this.enemyTanks = new ArrayList<>();
         this.tanks = new ArrayList<>();
         this.explosions = new ArrayList<>();
-
+        this.mapLoader = new MapLoader();
     }
 
     public void start() {
@@ -60,7 +69,7 @@ public class Game {
         final Canvas canvas = new Canvas(Constants.WINDOWS_HEIGHT, Constants.WINDOWS_HEIGHT);
         root.setLeft(canvas);
         gc = canvas.getGraphicsContext2D();
-        Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
+        scene = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
 
         VBox leftDisplay = new VBox(Constants.PADDING);
         Button backButton = new MenuButton("Back");
@@ -80,25 +89,21 @@ public class Game {
         leftDisplay.setAlignment(Pos.CENTER);
         root.setCenter(leftDisplay);
 
-        this.level = MapReader.readMap("maps//firstMap.map");
-        this.matrix = level.getMatrix();
+        initLevel();
 
 
-        Tank tank1 = new Tank("Denis", 100, level.getFirstPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getFirstPlayerRow() * Constants.MATRIX_CELL_SIZE);
-        Tank tank2 = new Tank("Pesho", 300, level.getSecondPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getSecondPlayerRow() * Constants.MATRIX_CELL_SIZE);
+        tank1 = new Tank("Denis", 100, level.getFirstPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getFirstPlayerRow() * Constants.MATRIX_CELL_SIZE);
+        tank2 = new Tank("Pesho", 300, level.getSecondPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getSecondPlayerRow() * Constants.MATRIX_CELL_SIZE);
 
         tanks.add(tank1);
         tanks.add(tank2);
-        collisionDetector = new CollisionDetector(matrix, tanks);
-        tank1.setCollisionDetector(collisionDetector);
-        tank2.setCollisionDetector(collisionDetector);
+        initCollisionDetector(tank1, tank2);
 
 
         initWallImages();
-        bulletHandler = new ObjectHandler(collisionDetector, explosions);
-        InputHandler inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
+        initHandlers(scene);
 
-        stage.setScene(s);
+        stage.setScene(scene);
 
         stage.show();
 
@@ -108,39 +113,75 @@ public class Game {
 
             @Override
             public void handle(long now) {
-                gc.drawImage(background, 0, 0);
-                gc.drawImage(bird, 270, 570);
-                SpawnEnemyTanks(now, gc);
-                Drawer.DrawTank(gc, tank1);
-                if (hasTwoPlayers) {
-                    Drawer.DrawTank(gc, tank2);
-                    scoreTank2.setText(tank2.getName() + " " + Integer.toString(tank2.getScore()));
+                if (!collisionDetector.isBirdDeath()){
+                    gc.drawImage(background, 0, 0);
+                    gc.drawImage(bird, 270, 570);
+                    SpawnEnemyTanks(now, gc);
+                    endLevelIfCan();
+                    Drawer.DrawTank(gc, tank1);
+                    if (hasTwoPlayers) {
+                        Drawer.DrawTank(gc, tank2);
+                        scoreTank2.setText(tank2.getName() + " " + Integer.toString(tank2.getScore()));
+                    }
+                    Drawer.DrawWalls(gc, wallImages, matrix);
+                    Drawer.DrawBullets(gc, bulletHandler);
+                    Drawer.DrawExplosions(gc, explosions);
+                    scoreTank1.setText(tank1.getName() + " " + Integer.toString(tank1.getScore()));
+
+                    inputHandler.refresh();
+                } else {
+                    //TODO display gameOver
                 }
-                Drawer.DrawWalls(gc, wallImages, matrix);
-                Drawer.DrawBullets(gc, bulletHandler);
-                Drawer.DrawExplosions(gc, explosions);
-                scoreTank1.setText(tank1.getName() + " " + Integer.toString(tank1.getScore()));
-
-                inputHandler.refresh();
-
             }
 
         }.start();
 
     }
 
+    protected void initHandlers(Scene s) {
+        this.bulletHandler = new ObjectHandler(collisionDetector, explosions);
+        this.inputHandler = new InputHandler(s, tank1, tank2, hasTwoPlayers, bulletHandler);
+    }
+
+    protected void initCollisionDetector(Tank tank1, Tank tank2) {
+        collisionDetector = new CollisionDetector(matrix, tanks);
+        tank1.setCollisionDetector(collisionDetector);
+        tank2.setCollisionDetector(collisionDetector);
+    }
+
+    protected void initLevel() {
+
+        this.level = MapReader.readMap("maps//" + mapLoader.getNextLevelName() + ".map");
+        this.matrix = level.getMatrix();
+    }
+
+    private void endLevelIfCan() {
+        if (spawnedEnemies >= numberOfEnemiesToBeSpawn && enemyTanks.size() == 0){
+            System.out.println("level end");
+            spawnedEnemies = 0;
+            initLevel();
+            initCollisionDetector(tank1, tank2);
+            initHandlers(scene);
+            tank1.goToNextLevel(level.getFirstPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getFirstPlayerRow() * Constants.MATRIX_CELL_SIZE);
+            tank2.goToNextLevel(level.getSecondPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getSecondPlayerRow() * Constants.MATRIX_CELL_SIZE);
+            this.lastTimeSpawn = System.nanoTime();
+        }
+
+    }
+
     private void SpawnEnemyTanks(long now, GraphicsContext gc) {
-        if ((now - this.lastTimeSpawn) / 1_000_000_00.0 > 80) {
+        if ((now - this.lastTimeSpawn) / 1_000_000_00.0 > 60 && spawnedEnemies < numberOfEnemiesToBeSpawn) {
+            this.spawnedEnemies++;
             boolean isReadyToBeSpawn = true;
             for (int i = 0; i < enemyTanks.size(); i++) {
                 EnemyTank tempTank = enemyTanks.get(i);
-                if (tempTank.getX() >= 30 && tempTank.getX() <= 60 && tempTank.getY() <= 30 ){
+                if (tempTank.getX() >= level.getEntryPointCol() * Constants.MATRIX_CELL_SIZE && tempTank.getX() <= (level.getEntryPointCol() + 1) * Constants.MATRIX_CELL_SIZE && tempTank.getY() <= level.getEntryPointRow() * Constants.MATRIX_CELL_SIZE ){
                     isReadyToBeSpawn = false;
                 }
 
             }
             if (isReadyToBeSpawn){
-                EnemyTank enemyTank = new EnemyTank("Tank", 100, 30, 0);
+                EnemyTank enemyTank = new EnemyTank("Tank", Constants.ENEMY_TANK_START_HEALTH, level.getEntryPointCol() * Constants.MATRIX_CELL_SIZE, level.getEntryPointRow() * Constants.MATRIX_CELL_SIZE);
                 enemyTank.setCollisionDetector(this.collisionDetector);
                 enemyTanks.add(enemyTank);
                 tanks.add(enemyTank);

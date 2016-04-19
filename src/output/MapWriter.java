@@ -1,8 +1,6 @@
 package output;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Objects;
 
 /**
@@ -20,6 +18,12 @@ public class MapWriter {
         try (ObjectOutputStream input = new ObjectOutputStream(new FileOutputStream(path))) {
             input.writeObject(mapLevel);
             input.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("maps//mapsNames.txt", true))){
+            writer.append(mapLevel.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }

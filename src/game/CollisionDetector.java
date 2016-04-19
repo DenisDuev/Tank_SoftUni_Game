@@ -12,10 +12,12 @@ import java.util.List;
 public class CollisionDetector {
     private int[][] matrix;
     private List<Tank> tanks;
+    private boolean isGameOver;
 
     public CollisionDetector(int[][] matrix, List<Tank> tanks) {
         this.matrix = matrix;
         this.tanks = tanks;
+        this.isGameOver = false;
     }
 
     public boolean shouldMove(Tank tank, int x, int y) {
@@ -27,7 +29,7 @@ public class CollisionDetector {
 
         if (matrix[tankY / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] <= 11 && matrix[tankY / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] > 0
                 || matrix[tankY / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] <= 11 && matrix[tankY / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] > 0
-                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE ] <= 11 && matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE ] > 0
+                || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] <= 11 && matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][(tankX + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE] > 0
                 || matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] <= 11 && matrix[(tankY + Constants.TANK_SIZE) / Constants.MATRIX_CELL_SIZE][tankX / Constants.MATRIX_CELL_SIZE] > 0
                 ) {
             return false;
@@ -35,7 +37,7 @@ public class CollisionDetector {
 
         for (int i = 0; i < tanks.size(); i++) {
             Tank otherTank = tanks.get(i);
-            if (!otherTank.isAlive()){
+            if (!otherTank.isAlive()) {
                 tanks.remove(i);
             }
             //check the tanks by reference, if they are equal, we don't have to check for collision
@@ -57,26 +59,38 @@ public class CollisionDetector {
         return true;
     }
 
-    public boolean isBulletCollide(Bullet bullet){
+    public boolean isBulletCollide(Bullet bullet) {
         int bulletX = bullet.getX();
         int bulletY = bullet.getY();
-        if (bulletX < 0 || bulletX > Constants.BOARD_SIZE - Bullet.IMAGE_WIDHT || bulletY < 0 || bulletY >= Constants.BOARD_SIZE){
+        if (bulletX < 0 || bulletX > Constants.BOARD_SIZE - Bullet.IMAGE_WIDHT || bulletY < 0 || bulletY >= Constants.BOARD_SIZE) {
             return true;
         }
 
-        if(matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] <= 10 && matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] > 0){
+        if (matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] <= 10 && matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE] > 0) {
             matrix[bulletY / Constants.MATRIX_CELL_SIZE][bulletX / Constants.MATRIX_CELL_SIZE]--;
-            bullet.getParentTank().AddScoreWallShoot();
+            bullet.getParentTank().addScoreWallShoot();
             return true;
         }
 
         for (Tank tank : tanks) {
-            if (tank.getX() <= bulletX && bulletX <= tank.getX() + Constants.TANK_SIZE && tank.getY() <= bulletY && bulletY <= tank.getY() + Constants.TANK_SIZE){
+            if (tank.getX() <= bulletX && bulletX <= tank.getX() + Constants.TANK_SIZE && tank.getY() <= bulletY && bulletY <= tank.getY() + Constants.TANK_SIZE) {
                 tank.decrementHealth();
+                bullet.getParentTank().addScoreTankShoot();
                 return true;
             }
+        }
+        //detectBird
+        if (8 * Constants.MATRIX_CELL_SIZE <= bulletX && bulletX <= 9 * Constants.MATRIX_CELL_SIZE && 18 * Constants.MATRIX_CELL_SIZE <= bulletY) {
+            isGameOver = true;
+            return false;
         }
 
         return false;
     }
+
+    public boolean isBirdDeath(){
+        return this.isGameOver;
+    }
 }
+
+

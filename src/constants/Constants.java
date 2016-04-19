@@ -24,4 +24,6 @@ public class Constants {
     public static final int WALL_WATER_INDEX = 11;
     public static final int WALL_GREEN_INDEX = 12;
 
+    public static final int TANK_START_HEALTH = 100;
+    public static final int ENEMY_TANK_START_HEALTH = 60;
 }
