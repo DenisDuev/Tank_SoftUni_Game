@@ -1,4 +1,4 @@
-package game_over;
+package stages;
 
 import constants.Constants;
 import javafx.geometry.Pos;
@@ -15,11 +15,11 @@ import objects.UI.ScoreLabel;
 /**
  * Created by Denis on 20.4.2016 ã..
  */
-public class GameOver {
+public class GameOverStage {
     private Stage stage;
     private Scene mainMenuScene;
 
-    public GameOver(Stage stage, Scene mainMenuScene) {
+    public GameOverStage(Stage stage, Scene mainMenuScene) {
         this.stage = stage;
         this.mainMenuScene = mainMenuScene;
     }

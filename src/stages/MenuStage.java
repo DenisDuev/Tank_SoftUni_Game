@@ -1,47 +1,49 @@
-package main;
+package stages;
 
 import constants.Constants;
-import game.Game;
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import map_editor.MapEditor;
 import objects.UI.MenuButton;
 
-public class Main extends Application {
+public class MenuStage extends Application {
     private Button onePlayerButton;
     private Button twoPlayersButton;
     private Button mapEditorButton;
     private Button settingsButton;
     private Button creditsButton;
+    private Button topScoresButton;
     private Scene windows;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        onePlayerButton = new MenuButton("1 Player");
-        twoPlayersButton = new MenuButton("2 Players");
-        mapEditorButton = new MenuButton("Map Editor");
-        settingsButton = new MenuButton("Settings");
-        creditsButton = new MenuButton("Credits");
+        this.onePlayerButton = new MenuButton("1 Player");
+        this.twoPlayersButton = new MenuButton("2 Players");
+        this.mapEditorButton = new MenuButton("Map Editor");
+        this.topScoresButton = new MenuButton("Top Scores");
+        this.settingsButton = new MenuButton("Settings");
+        this.creditsButton = new MenuButton("Credits");
 
-        onePlayerButton.setOnAction(c -> new Game(primaryStage, windows, false).start());
-        twoPlayersButton.setOnAction(b -> new Game(primaryStage, windows, true).start());
-        mapEditorButton.setOnAction(b -> new MapEditor(primaryStage, windows).start());
+        this.onePlayerButton.setOnAction(c -> new GameStage(primaryStage, windows, false).start());
+        this.twoPlayersButton.setOnAction(b -> new GameStage(primaryStage, windows, true).start());
+        this.mapEditorButton.setOnAction(b -> new MapEditorStage(primaryStage, windows).start());
+        this.topScoresButton.setOnAction(b -> new TopScoresStage(primaryStage, windows).show());
         //TODO make two more menu pages
         //settingsButton.setOnAction(this);
         //creditsButton.setOnAction(this);
 
         VBox centerMenu = new VBox(Constants.PADDING);
         centerMenu.setPrefSize(Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
-        centerMenu.setPadding(new Insets(115, 335, 115, 335));
+        centerMenu.setAlignment(Pos.CENTER);
         centerMenu.getChildren().addAll(
                 onePlayerButton,
                 twoPlayersButton,
                 mapEditorButton,
+                topScoresButton,
                 settingsButton,
                 creditsButton);
 
@@ -59,18 +61,11 @@ public class Main extends Application {
         borderPaneLayout.setBackground(background);
         borderPaneLayout.setCenter(centerMenu);
 
-
         windows = new Scene(borderPaneLayout, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
-
 
         primaryStage.setTitle("SoftUni Tank");
         primaryStage.setScene(windows);
         primaryStage.setResizable(false);
         primaryStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

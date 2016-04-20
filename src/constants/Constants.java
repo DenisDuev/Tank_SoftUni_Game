@@ -26,4 +26,7 @@ public class Constants {
 
     public static final int TANK_START_HEALTH = 100;
     public static final int ENEMY_TANK_START_HEALTH = 60;
+
+    public static final int BIRD_X = 270;
+    public static final int BIRD_Y = 570;
 }

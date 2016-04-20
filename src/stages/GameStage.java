@@ -1,7 +1,8 @@
-package game;
+package stages;
 
 import constants.Constants;
-import game_over.GameOver;
+import game.CollisionDetector;
+import game.ObjectHandler;
 import input.InputHandler;
 import input.MapLoader;
 import input.MapReader;
@@ -24,12 +25,13 @@ import javafx.stage.Stage;
 import objects.game_objects.Tanks.Explosion;
 import objects.game_objects.Tanks.Tank;
 import output.MapLevel;
+import output.ScoreManager;
 import utilities.ExitBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class GameStage {
     private static final int NUMBER_OF_IMAGES = 4;
 
     private Stage stage;
@@ -56,7 +58,7 @@ public class Game {
 
     private long lastTimeSpawn;
 
-    public Game(Stage stage, Scene mainMenuScene, boolean hasTwoPlayers) {
+    public GameStage(Stage stage, Scene mainMenuScene, boolean hasTwoPlayers) {
         this.stage = stage;
         this.hasTwoPlayers = hasTwoPlayers;
         this.mainMenuScene = mainMenuScene;
@@ -77,6 +79,7 @@ public class Game {
         VBox leftDisplay = new VBox(Constants.PADDING);
         Button backButton = new MenuButton("Back");
         backButton.setOnMouseClicked(b -> {
+            savesScores();
             stage.setScene(mainMenuScene);
             stage.show();
         });
@@ -107,7 +110,7 @@ public class Game {
             public void handle(long now) {
                 if (!collisionDetector.isBirdDeath() && isTanksAlive()){
                     gc.drawImage(background, 0, 0);
-                    gc.drawImage(bird, 270, 570);
+                    gc.drawImage(bird, Constants.BIRD_X, Constants.BIRD_Y);
                     SpawnEnemyTanks(now, gc);
                     goToNextLevelIfCan();
                     Drawer.DrawTank(gc, tank1);
@@ -115,6 +118,7 @@ public class Game {
                         Drawer.DrawTank(gc, tank2);
                         scoreTank2.setText(tank2.getName() + " " + Integer.toString(tank2.getScore()));
                     }
+
                     Drawer.DrawWalls(gc, wallImages, matrix);
                     Drawer.DrawBullets(gc, bulletHandler);
                     Drawer.DrawExplosions(gc, explosions);
@@ -122,8 +126,7 @@ public class Game {
 
                     inputHandler.refresh();
                 } else if(!isGameFinallyOver){
-                    System.out.println("game over");
-                    GameOver gameOver = new GameOver(stage, mainMenuScene);
+                    GameOverStage gameOver = new GameOverStage(stage, mainMenuScene);
                     gameOver.show(getTankScores());
                     isGameFinallyOver = true;
                 }
@@ -222,9 +225,13 @@ public class Game {
         ExitBox exitBox = new ExitBox(300, 100, "Exit");
         boolean isClosing = exitBox.display("Are you sure you want to close");
         if (isClosing) {
-            //TODO save score before leaving
+            savesScores();
             stage.close();
         }
+    }
+
+    private void savesScores() {
+        ScoreManager.saveScore(tank1.getScore(), tank1.getName(), tank2.getScore(), tank2.getName());
     }
 
     public void initWallImages() {

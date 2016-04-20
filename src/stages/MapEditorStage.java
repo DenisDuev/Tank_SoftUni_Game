@@ -1,4 +1,4 @@
-package map_editor;
+package stages;
 
 import constants.Constants;
 import javafx.geometry.Pos;
@@ -23,7 +23,7 @@ import utilities.ExitBox;
 /**
  * Created by Denis on 16.4.2016 ã..
  */
-public class MapEditor {
+public class MapEditorStage {
     private Stage stage;
     private GraphicsContext gc;
     private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
@@ -31,7 +31,7 @@ public class MapEditor {
     private TextField textField;
     private Scene mainMenuScene;
 
-    public MapEditor(Stage stage, Scene mainMenuScene) {
+    public MapEditorStage(Stage stage, Scene mainMenuScene) {
         this.stage = stage;
         this.mainMenuScene = mainMenuScene;
     }
