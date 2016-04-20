@@ -4,9 +4,9 @@ import constants.Constants;
 import game.ObjectHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import objects.Bullet;
-import objects.Explosion;
-import objects.Tanks.Tank;
+import objects.game_objects.Tanks.Bullet;
+import objects.game_objects.Tanks.Explosion;
+import objects.game_objects.Tanks.Tank;
 
 import java.util.List;
 

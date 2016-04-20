@@ -1,8 +1,8 @@
 package game;
 
 import constants.Constants;
-import objects.Explosion;
-import objects.Bullet;
+import objects.game_objects.Tanks.Explosion;
+import objects.game_objects.Tanks.Bullet;
 
 import java.util.ArrayList;
 import java.util.List;

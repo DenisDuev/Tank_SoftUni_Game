@@ -1,4 +1,4 @@
-package objects;
+package objects.game_objects.Tanks;
 
 import javafx.scene.image.Image;
 

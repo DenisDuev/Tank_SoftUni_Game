@@ -1,13 +1,15 @@
 package game;
 
 import constants.Constants;
+import game_over.GameOver;
 import input.InputHandler;
 import input.MapLoader;
 import input.MapReader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import objects.MenuButton;
-import objects.Tanks.EnemyTank;
+import objects.UI.MenuButton;
+import objects.UI.ScoreLabel;
+import objects.game_objects.Tanks.EnemyTank;
 import output.Drawer;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
@@ -19,8 +21,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import objects.Explosion;
-import objects.Tanks.Tank;
+import objects.game_objects.Tanks.Explosion;
+import objects.game_objects.Tanks.Tank;
 import output.MapLevel;
 import utilities.ExitBox;
 
@@ -47,6 +49,7 @@ public class Game {
     private MapLoader mapLoader;
     private InputHandler inputHandler;
     private Scene scene;
+    private boolean isGameFinallyOver;
 
     private Tank tank1;
     private Tank tank2;
@@ -81,30 +84,19 @@ public class Game {
             e.consume();
             closeProgram();
         });
-        Label scoreTank1 = new Label("");
-        scoreTank1.setPrefSize(100, 20);
-        Label scoreTank2 = new Label("");
-        scoreTank2.setPrefSize(100, 20);
+        Label scoreTank1 = new ScoreLabel("");
+        Label scoreTank2 = new ScoreLabel("");
         leftDisplay.getChildren().addAll(backButton, scoreTank1, scoreTank2);
         leftDisplay.setAlignment(Pos.CENTER);
         root.setCenter(leftDisplay);
 
         initLevel();
-
-
-        tank1 = new Tank("Denis", 100, level.getFirstPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getFirstPlayerRow() * Constants.MATRIX_CELL_SIZE);
-        tank2 = new Tank("Pesho", 300, level.getSecondPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getSecondPlayerRow() * Constants.MATRIX_CELL_SIZE);
-
-        tanks.add(tank1);
-        tanks.add(tank2);
+        initTanks();
         initCollisionDetector(tank1, tank2);
-
-
         initWallImages();
         initHandlers(scene);
 
         stage.setScene(scene);
-
         stage.show();
 
         new AnimationTimer() {
@@ -113,11 +105,11 @@ public class Game {
 
             @Override
             public void handle(long now) {
-                if (!collisionDetector.isBirdDeath()){
+                if (!collisionDetector.isBirdDeath() && isTanksAlive()){
                     gc.drawImage(background, 0, 0);
                     gc.drawImage(bird, 270, 570);
                     SpawnEnemyTanks(now, gc);
-                    endLevelIfCan();
+                    goToNextLevelIfCan();
                     Drawer.DrawTank(gc, tank1);
                     if (hasTwoPlayers) {
                         Drawer.DrawTank(gc, tank2);
@@ -129,13 +121,33 @@ public class Game {
                     scoreTank1.setText(tank1.getName() + " " + Integer.toString(tank1.getScore()));
 
                     inputHandler.refresh();
-                } else {
-                    //TODO display gameOver
+                } else if(!isGameFinallyOver){
+                    System.out.println("game over");
+                    GameOver gameOver = new GameOver(stage, mainMenuScene);
+                    gameOver.show(getTankScores());
+                    isGameFinallyOver = true;
                 }
             }
 
         }.start();
 
+    }
+
+    protected void initTanks() {
+        tank1 = new Tank("Denis", Constants.TANK_START_HEALTH, level.getFirstPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getFirstPlayerRow() * Constants.MATRIX_CELL_SIZE);
+        tank2 = new Tank("Pesho", Constants.TANK_START_HEALTH, level.getSecondPlayerCol() * Constants.MATRIX_CELL_SIZE, level.getSecondPlayerRow() * Constants.MATRIX_CELL_SIZE);
+
+        tanks.add(tank1);
+        tanks.add(tank2);
+    }
+
+    private String getTankScores() {
+        String msg = tank1.getName() + " " + tank1.getScore();
+        if (hasTwoPlayers){
+            msg += "\n" + tank2.getName() + " " + tank2.getScore();
+        }
+
+        return msg;
     }
 
     protected void initHandlers(Scene s) {
@@ -155,7 +167,7 @@ public class Game {
         this.matrix = level.getMatrix();
     }
 
-    private void endLevelIfCan() {
+    private void goToNextLevelIfCan() {
         if (spawnedEnemies >= numberOfEnemiesToBeSpawn && enemyTanks.size() == 0){
             System.out.println("level end");
             spawnedEnemies = 0;
@@ -221,5 +233,13 @@ public class Game {
         wallImages[1] = new Image("resources/walls/wall_metal.png");
         wallImages[2] = new Image("resources/walls/wall_water.png");
         wallImages[3] = new Image("resources/walls/wall_green.png");
+    }
+
+    private boolean isTanksAlive(){
+        if (!hasTwoPlayers){
+            return this.tank1.isAlive();
+        }
+
+        return this.tank1.isAlive() || this.tank2.isAlive();
     }
 }

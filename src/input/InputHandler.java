@@ -2,7 +2,7 @@ package input;
 
 import game.ObjectHandler;
 import javafx.scene.Scene;
-import objects.Tanks.Tank;
+import objects.game_objects.Tanks.Tank;
 
 import java.util.HashSet;
 

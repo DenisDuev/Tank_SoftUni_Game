@@ -10,7 +10,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import map_editor.MapEditor;
-import objects.MenuButton;
+import objects.UI.MenuButton;
 
 public class Main extends Application {
     private Button onePlayerButton;

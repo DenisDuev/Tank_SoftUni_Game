@@ -1,8 +1,7 @@
-package objects;
+package objects.game_objects.Tanks;
 
 import constants.Constants;
 import javafx.scene.image.Image;
-import objects.Tanks.Tank;
 
 /**
  * Created by Denis on 15.4.2016 ã..

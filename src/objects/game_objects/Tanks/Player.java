@@ -1,6 +1,6 @@
-package objects;
+package objects.game_objects.Tanks;
 
-import objects.Tanks.Tank;
+import objects.game_objects.Tanks.Tank;
 
 /**
  * Created by Denis on 15.4.2016 ã..

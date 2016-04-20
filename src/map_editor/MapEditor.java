@@ -16,7 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import objects.MenuButton;
+import objects.UI.MenuButton;
 import utilities.AlertBox;
 import utilities.ExitBox;
 

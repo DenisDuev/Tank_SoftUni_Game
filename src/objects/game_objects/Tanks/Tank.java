@@ -1,10 +1,8 @@
-package objects.Tanks;
+package objects.game_objects.Tanks;
 
 import constants.Constants;
 import game.CollisionDetector;
 import javafx.scene.image.Image;
-import objects.Bullet;
-import objects.GameObject;
 
 /**
  * Created by Denis on 13.4.2016 �..
@@ -34,6 +32,10 @@ public class Tank extends GameObject {
 
     public boolean isAlive(){
         return this.isAlive;
+    }
+
+    public void die(){
+        this.isAlive = false;
     }
 
     protected void initImages() {
@@ -132,7 +134,7 @@ public class Tank extends GameObject {
     public void decrementHealth(){
         this.health -= 30;
         if (this.health <= 0){
-            this.isAlive = false;
+            this.die();
         }
     }
 
