@@ -1,10 +1,9 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
 import stages.MenuStage;
 
-/**
- * Created by Denis on 20.4.2016 ã..
- */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         MenuStage.launch(args);
     }
 }

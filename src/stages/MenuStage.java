@@ -34,7 +34,7 @@ public class MenuStage extends Application {
         this.topScoresButton.setOnAction(b -> new TopScoresStage(primaryStage, windows).show());
         //TODO make two more menu pages
         //settingsButton.setOnAction(this);
-        //creditsButton.setOnAction(this);
+        creditsButton.setOnAction(event -> new CreditsStage(primaryStage,windows).show() );
 
         VBox centerMenu = new VBox(Constants.PADDING);
         centerMenu.setPrefSize(Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT);
@@ -67,5 +67,10 @@ public class MenuStage extends Application {
         primaryStage.setScene(windows);
         primaryStage.setResizable(false);
         primaryStage.show();
+
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
