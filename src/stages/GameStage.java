@@ -126,6 +126,7 @@ public class GameStage {
 
                     inputHandler.refresh();
                 } else if(!isGameFinallyOver){
+                    savesScores();
                     GameOverStage gameOver = new GameOverStage(stage, mainMenuScene);
                     gameOver.show(getTankScores());
                     isGameFinallyOver = true;
