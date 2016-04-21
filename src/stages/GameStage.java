@@ -186,7 +186,7 @@ public class GameStage {
     }
 
     private void SpawnEnemyTanks(long now, GraphicsContext gc) {
-        if ((now - this.lastTimeSpawn) / 1_000_000_00.0 > 60 && spawnedEnemies < numberOfEnemiesToBeSpawn) {
+        if ((now - this.lastTimeSpawn) / 1_000_000_00.0 > 40 && spawnedEnemies < numberOfEnemiesToBeSpawn) {
             this.spawnedEnemies++;
             boolean isReadyToBeSpawn = true;
             for (int i = 0; i < enemyTanks.size(); i++) {

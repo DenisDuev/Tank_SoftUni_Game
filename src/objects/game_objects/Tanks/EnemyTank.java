@@ -12,7 +12,7 @@ public class EnemyTank extends Tank {
 
     public EnemyTank(String name, int health, int x, int y) {
         super(name, health, x, y);
-        this.direction = DOWN;
+        this.direction = getRandomDir();
         this.lastTimeSpawn = System.nanoTime();
     }
 
@@ -60,6 +60,11 @@ public class EnemyTank extends Tank {
         }
 
         return false;
+    }
+
+    private int getRandomDir(){
+        Random random = new Random();
+        return random.nextInt(4);
     }
 }
 

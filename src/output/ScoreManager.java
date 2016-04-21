@@ -15,8 +15,13 @@ public class ScoreManager {
         scores.put(tank1Score, tank1Name);
         scores.put(tank2Score, tank2Name);
 
-        scores.remove(scores.firstKey());
-        scores.remove(scores.firstKey());
+        if (!scores.containsKey(tank1Score)){
+            scores.remove(scores.firstKey());
+        }
+        if (!scores.containsKey(tank2Score)){
+            scores.remove(scores.firstKey());
+        }
+
 
         writeScoreToFile(scores);
     }
