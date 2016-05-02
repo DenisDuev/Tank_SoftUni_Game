@@ -1,6 +1,7 @@
 softUni
-piramid
 firstMap
+piramid
 second
 ivan
 example
+softExamplelabirynth

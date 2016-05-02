@@ -23,7 +23,7 @@ public class MapWriter {
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("maps//mapsNames.txt", true))){
-            writer.append("\n" + mapLevel.getName());
+            writer.append(mapLevel.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }

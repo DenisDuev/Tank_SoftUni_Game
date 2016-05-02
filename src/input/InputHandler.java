@@ -2,12 +2,12 @@ package input;
 
 import game.ObjectHandler;
 import javafx.scene.Scene;
-import objects.game_objects.Tanks.Tank;
+import objects.game_objects.tanks.Tank;
 
 import java.util.HashSet;
 
 /**
- * Created by Denis on 13.4.2016 ã..
+ * Created by Denis on 13.4.2016 ï¿½..
  */
 public class InputHandler {
     private Scene scene;

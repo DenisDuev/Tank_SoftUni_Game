@@ -4,14 +4,14 @@ import constants.Constants;
 import game.ObjectHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import objects.game_objects.Tanks.Bullet;
-import objects.game_objects.Tanks.Explosion;
-import objects.game_objects.Tanks.Tank;
+import objects.game_objects.Bullet;
+import objects.game_objects.Explosion;
+import objects.game_objects.tanks.Tank;
 
 import java.util.List;
 
 /**
- * Created by Denis on 17.4.2016 ã..
+ * Created by Denis on 17.4.2016 ï¿½..
  */
 public class Drawer {
 

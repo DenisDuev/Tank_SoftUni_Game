@@ -21,7 +21,7 @@ import utilities.AlertBox;
 import utilities.ExitBox;
 
 /**
- * Created by Denis on 16.4.2016 ã..
+ * Created by Denis on 16.4.2016 ï¿½..
  */
 public class MapEditorStage {
     private Stage stage;
