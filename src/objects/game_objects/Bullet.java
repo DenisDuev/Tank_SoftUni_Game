@@ -22,10 +22,10 @@ public class Bullet extends GameObject {
         this.direction = direction;
         this.setVelocitiesAndStartPoint();
         this.parentTank = parentTank;
-        SetImage();
+        setImage();
     }
 
-    private void SetImage() {
+    private void setImage() {
         switch (this.direction) {
             case UP:
                 this.image = new Image("resources/bullets/bullet_up.png");
@@ -73,7 +73,7 @@ public class Bullet extends GameObject {
         return parentTank;
     }
 
-    public void Move() {
+    public void move() {
         this.x += xVelocity;
         this.y += yVelocity;
     }

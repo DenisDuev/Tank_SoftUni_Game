@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Denis on 19.4.2016 ã..
- */
 public class MapLoader {
     private List<String> maps;
     private int index;
@@ -28,8 +25,10 @@ public class MapLoader {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            System.out.println("File not found.");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("IO exception.");
         }
     }
 

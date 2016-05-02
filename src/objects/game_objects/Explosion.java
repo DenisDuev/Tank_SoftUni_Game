@@ -17,10 +17,7 @@ public class Explosion extends GameObject {
 
     public boolean decrementFrames() {
         this.frames--;
-        if (this.frames <= 0){
-            return true;
-        }
+        return this.frames <= 0;
 
-        return false;
     }
 }

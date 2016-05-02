@@ -12,18 +12,13 @@ import javafx.stage.Stage;
 import objects.UI.MenuButton;
 import objects.UI.ScoreLabel;
 
-/**
- * Created by Denis on 20.4.2016 ã..
- */
-public class GameOverStage {
-    private Stage stage;
-    private Scene mainMenuScene;
+public class GameOverStage extends BasicStage {
 
     public GameOverStage(Stage stage, Scene mainMenuScene) {
-        this.stage = stage;
-        this.mainMenuScene = mainMenuScene;
+        super(stage, mainMenuScene);
     }
 
+    @Override
     public void show(String messageScores){
 
         Label gameOverLabel = new Label("GAME OVER");
@@ -31,9 +26,7 @@ public class GameOverStage {
         gameOverLabel.setTextFill(Color.RED);
         Label text = new ScoreLabel(messageScores);
         Button backButton = new MenuButton("Back");
-        backButton.setOnMouseClicked(e -> {
-            stage.setScene(mainMenuScene);
-        });
+        backButton.setOnMouseClicked(e -> stage.setScene(mainMenuScene));
 
         VBox vBox = new VBox(20);
         vBox.setAlignment(Pos.CENTER);
@@ -42,6 +35,11 @@ public class GameOverStage {
         Scene scene = new Scene(vBox, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
         this.stage.setScene(scene);
         this.stage.show();
+    }
+
+    @Override
+    public void show() {
+
     }
 }
 

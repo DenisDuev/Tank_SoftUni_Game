@@ -1,6 +1,5 @@
 package stages;
 
-import constants.Constants;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,19 +13,14 @@ import objects.UI.ScoreLabel;
 import objects.UI.TopScoreLabel;
 import output.ScoreManager;
 
-/**
- * Created by Denis on 20.4.2016 ã..
- */
-public class TopScoresStage {
-    private Stage stage;
-    private Scene scene;
-    private Scene mainMenuScene;
+import static constants.Constants.*;
 
+public class TopScoresStage extends BasicStage {
     public TopScoresStage(Stage stage, Scene mainScene) {
-        this.stage = stage;
-        this.mainMenuScene = mainScene;
+        super(stage, mainScene);
     }
 
+    @Override
     public void show() {
         Label title = new ScoreLabel("Top 10 Scores");
         Label text = new TopScoreLabel(ScoreManager.getScores());
@@ -41,15 +35,15 @@ public class TopScoresStage {
         Background background = new Background(
                 new BackgroundImage(
                         new Image("resources/menu_background.png",
-                                Constants.WINDOWS_WIDTH + Constants.PADDING,
-                                Constants.WINDOWS_HEIGHT + Constants.PADDING,
+                                WINDOWS_WIDTH + PADDING,
+                                WINDOWS_HEIGHT + PADDING,
                                 false, false),
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundPosition.CENTER,
                         BackgroundSize.DEFAULT));
         vBox.setBackground(background);
-        Scene scene = new Scene(vBox, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
+        Scene scene = new Scene(vBox, WINDOWS_WIDTH, WINDOWS_HEIGHT, Color.BLACK);
         this.stage.setScene(scene);
         this.stage.show();
     }

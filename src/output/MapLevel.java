@@ -4,9 +4,6 @@ import constants.Constants;
 
 import java.io.Serializable;
 
-/**
- * Created by Denis on 18.4.2016 �..
- */
 public class MapLevel implements Serializable {
     private String name;
     private int[][] matrix;

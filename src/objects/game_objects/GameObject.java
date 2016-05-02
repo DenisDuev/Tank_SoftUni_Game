@@ -2,9 +2,6 @@ package objects.game_objects;
 
 import javafx.scene.image.Image;
 
-/**
- * Created by Denis on 15.4.2016 �..
- */
 public abstract class GameObject {
     protected final int UP = 0;
     protected final int DOWN = 1;

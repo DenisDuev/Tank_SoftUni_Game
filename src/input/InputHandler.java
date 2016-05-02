@@ -6,9 +6,6 @@ import objects.game_objects.tanks.Tank;
 
 import java.util.HashSet;
 
-/**
- * Created by Denis on 13.4.2016 �..
- */
 public class InputHandler {
     private Scene scene;
     private Tank tank1;

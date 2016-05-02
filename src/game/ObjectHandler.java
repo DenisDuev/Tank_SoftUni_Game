@@ -1,11 +1,12 @@
 package game;
 
-import constants.Constants;
 import objects.game_objects.Explosion;
 import objects.game_objects.Bullet;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static constants.Constants.*;
 
 /**
  * Created by Denis on 15.4.2016 �..
@@ -28,10 +29,10 @@ public class ObjectHandler {
     public List<Bullet> GetBulletsToDraw() {
         for (int index = 0; index < bullets.size(); index++) {
             Bullet bullet = bullets.get(index);
-            bullet.Move();
+            bullet.move();
             if (collisionDetector.isBulletCollide(bullet)) {
                 bullets.remove(index);
-                explosions.add(new Explosion(bullet.getX() - Constants.MATRIX_CELL_SIZE / 2, bullet.getY() - Constants.MATRIX_CELL_SIZE / 2));
+                explosions.add(new Explosion(bullet.getX() - MATRIX_CELL_SIZE / 2, bullet.getY() - MATRIX_CELL_SIZE / 2));
             }
         }
         return bullets;

@@ -1,6 +1,6 @@
 package objects.game_objects.tanks;
 
-import constants.Constants;
+import static constants.Constants.*;
 
 public class PlayerTank extends Tank {
     private int score;
@@ -30,7 +30,7 @@ public class PlayerTank extends Tank {
     }
 
     public void goToNextLevel(int x, int y){
-        this.health = Constants.TANK_START_HEALTH;
+        this.health = TANK_START_HEALTH;
         this.x = x;
         this.y = y;
         this.direction = UP;

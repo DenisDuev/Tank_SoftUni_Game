@@ -4,9 +4,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
-/**
- * Created by Denis on 20.4.2016 ã..
- */
 public class TopScoreLabel extends Label {
     public TopScoreLabel(String text) {
         super(text);

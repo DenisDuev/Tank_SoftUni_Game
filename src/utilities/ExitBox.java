@@ -10,9 +10,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-/**
- * Created by Denis on 19.4.2016 ã..
- */
 public class ExitBox extends AlertBox {
     private boolean closeTheProgram;
 

@@ -7,17 +7,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 /**
- * Created by Denis on 18.4.2016 ã..
+ * Created by Denis on 18.4.2016 ï¿½..
  */
 public class MapReader {
-    public static MapLevel readMap(String path){
+    public static MapLevel readMap(String path) {
         MapLevel map = null;
-        try(ObjectInputStream reader = new ObjectInputStream(new FileInputStream(path))) {
+        try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(path))) {
             Object obj = reader.readObject();
             map = (MapLevel) obj;
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("class not found, may be changed. Please check for differences.");
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

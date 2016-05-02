@@ -1,6 +1,5 @@
 package stages;
 
-import constants.Constants;
 import javafx.geometry.Pos;
 import output.Drawer;
 import output.MapWriter;
@@ -20,29 +19,26 @@ import objects.UI.MenuButton;
 import utilities.AlertBox;
 import utilities.ExitBox;
 
-/**
- * Created by Denis on 16.4.2016 �..
- */
-public class MapEditorStage {
-    private Stage stage;
+import static constants.Constants.*;
+
+public class MapEditorStage extends BasicStage {
     private GraphicsContext gc;
-    private static int[][] matrix = new int[Constants.MATRIX_ROWS][Constants.MATRIX_COLS];
+    private static int[][] matrix = new int[MATRIX_ROWS][MATRIX_COLS];
     private Image[] wallImages;
     private TextField textField;
-    private Scene mainMenuScene;
 
     public MapEditorStage(Stage stage, Scene mainMenuScene) {
-        this.stage = stage;
-        this.mainMenuScene = mainMenuScene;
+        super(stage, mainMenuScene);
     }
 
-    public void start() {
+    @Override
+    public void show() {
         BorderPane root = new BorderPane();
 
-        final Canvas canvas = new Canvas(Constants.WINDOWS_HEIGHT, Constants.WINDOWS_HEIGHT);
+        final Canvas canvas = new Canvas(WINDOWS_HEIGHT, WINDOWS_HEIGHT);
         root.setLeft(canvas);
 
-        Scene s = new Scene(root, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
+        Scene s = new Scene(root, WINDOWS_WIDTH, WINDOWS_HEIGHT, Color.BLACK);
         gc = canvas.getGraphicsContext2D();
 
         Button button = new MenuButton("SAVE");
@@ -59,18 +55,18 @@ public class MapEditorStage {
             stage.show();
         });
 
-        VBox leftMenu = new VBox(Constants.PADDING);
+        VBox leftMenu = new VBox(PADDING);
         leftMenu.setAlignment(Pos.CENTER);
         leftMenu.getChildren().addAll(backButton, button, textField);
-        leftMenu.setPrefSize(Constants.BOARD_PADDING, Constants.BOARD_SIZE);
+        leftMenu.setPrefSize(BOARD_PADDING, BOARD_SIZE);
         leftMenu.setPadding(new Insets(10, 10, 30, 30));
         root.setCenter(leftMenu);
 
         initWallImages();
         s.setOnMouseClicked(event -> {
-            if (event.getX() < Constants.BOARD_SIZE) {
-                matrix[(int) event.getY() / Constants.MATRIX_CELL_SIZE][(int) event.getX() / Constants.MATRIX_CELL_SIZE] =
-                        ++matrix[(int) event.getY() / Constants.MATRIX_CELL_SIZE][(int) event.getX() / Constants.MATRIX_CELL_SIZE] % 5;
+            if (event.getX() < BOARD_SIZE) {
+                matrix[(int) event.getY() / MATRIX_CELL_SIZE][(int) event.getX() / MATRIX_CELL_SIZE] =
+                        ++matrix[(int) event.getY() / MATRIX_CELL_SIZE][(int) event.getX() / MATRIX_CELL_SIZE] % 5;
             }
         });
 

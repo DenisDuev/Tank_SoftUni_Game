@@ -36,7 +36,7 @@ public class Player {
         return score;
     }
 
-    public void addScore(int addScore){
+        public void addScore(int addScore){
         if (addScore <= 0){
             throw new IllegalArgumentException("Score must be positive number");
         }

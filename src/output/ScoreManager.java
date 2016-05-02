@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by Denis on 20.4.2016 ã..
- */
 public class ScoreManager {
 
     public static void saveScore(int tank1Score, String tank1Name, int tank2Score, String tank2Name) {
@@ -22,7 +19,6 @@ public class ScoreManager {
             scores.remove(scores.firstKey());
         }
 
-
         writeScoreToFile(scores);
     }
 
@@ -32,6 +28,7 @@ public class ScoreManager {
             writer.flush();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            System.out.println("File not found.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,9 +40,11 @@ public class ScoreManager {
             scores = (TreeMap<Integer, String>) reader.readObject();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("File not found");
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Class not found, may be changed.");
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -61,7 +60,7 @@ public class ScoreManager {
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<Integer, String> score : scores.entrySet()) {
-            stringBuilder.append(score.getKey() + " - " + score.getValue() + "\n");
+            stringBuilder.append(score.getKey()).append(" - ").append(score.getValue()).append("\n");
         }
 
         return stringBuilder.toString();

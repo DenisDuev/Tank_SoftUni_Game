@@ -9,9 +9,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * Created by Denis on 19.4.2016 ã..
- */
 public class AlertBox {
     private int width;
     private int height;
@@ -40,7 +37,7 @@ public class AlertBox {
 
     protected Stage initStage() {
         Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
+        window.initModality(Modality.WINDOW_MODAL);
         window.setTitle(this.title);
         window.setResizable(false);
         window.setWidth(this.width);
