@@ -61,7 +61,7 @@ public class InputHandler {
             }
 
             if (this.input.contains("ENTER") && elapsedSystemTime > 6) {
-                bulletHandler.AddBullet(tank1.spawnBullet());
+                bulletHandler.addBullet(tank1.spawnBullet());
                 this.lastSystemTime = currentSystemTime;
 
             }
@@ -79,7 +79,7 @@ public class InputHandler {
                 this.tank2.move(0, 1);
             }
             if (this.input.contains("Q") && elapsedSystemTime > 6){
-                this.bulletHandler.AddBullet(tank2.spawnBullet());
+                this.bulletHandler.addBullet(tank2.spawnBullet());
                 this.lastSystemTime = currentSystemTime;
             }
         }

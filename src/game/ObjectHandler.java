@@ -6,11 +6,6 @@ import objects.game_objects.Bullet;
 import java.util.ArrayList;
 import java.util.List;
 
-import static constants.Constants.*;
-
-/**
- * Created by Denis on 15.4.2016 �..
- */
 public class ObjectHandler {
     private List<Bullet> bullets;
     private CollisionDetector collisionDetector;
@@ -22,17 +17,17 @@ public class ObjectHandler {
         this.explosions = explosions;
     }
 
-    public void AddBullet(Bullet bullet) {
+    public void addBullet(Bullet bullet) {
         this.bullets.add(bullet);
     }
 
-    public List<Bullet> GetBulletsToDraw() {
-        for (int index = 0; index < bullets.size(); index++) {
-            Bullet bullet = bullets.get(index);
+    public List<Bullet> getBulletsToDraw() {
+        for (int index = 0; index < this.bullets.size(); index++) {
+            Bullet bullet = this.bullets.get(index);
             bullet.move();
-            if (collisionDetector.isBulletCollide(bullet)) {
-                bullets.remove(index);
-                explosions.add(new Explosion(bullet.getX() - MATRIX_CELL_SIZE / 2, bullet.getY() - MATRIX_CELL_SIZE / 2));
+            if (this.collisionDetector.isBulletCollide(bullet)) {
+                this.bullets.remove(index);
+                this.explosions.add(new Explosion(bullet));
             }
         }
         return bullets;

@@ -1,16 +1,16 @@
 package objects.game_objects;
 
-import constants.Constants;
+import Interfaces.Drawable;
+import Interfaces.Moveable;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.game_objects.tanks.Tank;
 
-/**
- * Created by Denis on 15.4.2016 �..
- */
-public class Bullet extends GameObject {
+import static constants.Constants.*;
+
+public class Bullet extends GameObject implements Drawable, Moveable {
     public static final int VELOCITY = 5;
-    public static final int IMAGE_WIDHT = 3;
-    public static final int IMAGE_HEIGHT = 8;
+    public static final int IMAGE_WIGHT = 3;
 
     private int xVelocity;
     private int yVelocity;
@@ -22,7 +22,7 @@ public class Bullet extends GameObject {
         this.direction = direction;
         this.setVelocitiesAndStartPoint();
         this.parentTank = parentTank;
-        setImage();
+        this.setImage();
     }
 
     private void setImage() {
@@ -46,21 +46,21 @@ public class Bullet extends GameObject {
         switch (this.direction) {
             case UP:
                 this.yVelocity = -VELOCITY;
-                this.x += (Constants.TANK_SIZE) / 2;
+                this.x += TANK_SIZE / 2;
                 break;
             case DOWN:
                 this.yVelocity = VELOCITY;
-                this.x += (Constants.TANK_SIZE) / 2;
-                this.y += Constants.TANK_SIZE;
+                this.x += TANK_SIZE / 2;
+                this.y += TANK_SIZE;
                 break;
             case LEFT:
                 this.xVelocity = -VELOCITY;
-                this.y += (Constants.TANK_SIZE) / 2;
+                this.y += TANK_SIZE / 2;
                 break;
             case RIGHT:
                 this.xVelocity = VELOCITY;
-                this.x += Constants.TANK_SIZE;
-                this.y += (Constants.TANK_SIZE) / 2;
+                this.x += TANK_SIZE;
+                this.y += TANK_SIZE / 2;
                 break;
         }
     }
@@ -69,12 +69,21 @@ public class Bullet extends GameObject {
         return this.image;
     }
 
-    public Tank getParentTank() {
-        return parentTank;
+    public void addScoreToParentTankWallShoot(){
+        this.parentTank.addScoreWallShoot();
+    }
+
+    public void addScoreToParentTankTankShoot(){
+        this.parentTank.addScoreTankShoot();
     }
 
     public void move() {
         this.x += xVelocity;
         this.y += yVelocity;
+    }
+
+    @Override
+    public void draw(GraphicsContext graphicsContext) {
+        graphicsContext.drawImage(this.getImage(), this.getX(), this.getY());
     }
 }

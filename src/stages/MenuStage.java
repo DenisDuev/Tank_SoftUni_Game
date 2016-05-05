@@ -1,6 +1,5 @@
 package stages;
 
-import constants.Constants;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -29,8 +28,7 @@ public class MenuStage extends Application {
         twoPlayersButton.setOnAction(b -> new GameStage(primaryStage, this.windows, true).show());
         mapEditorButton.setOnAction(b -> new MapEditorStage(primaryStage, this.windows).show());
         topScoresButton.setOnAction(b -> new TopScoresStage(primaryStage, this.windows).show());
-        //TODO make two more menu pages
-        //settingsButton.setOnAction(this);
+        settingsButton.setOnAction(event -> new SettingsStage(primaryStage, this.windows).show());
         creditsButton.setOnAction(event -> new CreditsStage(primaryStage,this.windows).show() );
 
         VBox centerMenu = new VBox(PADDING);

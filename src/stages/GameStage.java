@@ -114,8 +114,8 @@ public class GameStage extends BasicStage {
             @Override
             public void handle(long now) {
                 if (!collisionDetector.isBirdDeath() && isTanksAlive()){
-                    gc.drawImage(background, 0, 0);
-                    gc.drawImage(bird, BIRD_X, BIRD_Y);
+                    Drawer.drawBackground(gc,background);
+                    Drawer.drawBird(gc,bird);
                     spawnEnemyTanks(now, gc);
                     goToNextLevelIfCan();
                     Drawer.drawTank(gc, firstTank);
@@ -143,20 +143,28 @@ public class GameStage extends BasicStage {
     }
 
     protected void initTanks() {
-        firstTank = new PlayerTank("Denis", TANK_START_HEALTH, level.getFirstPlayerCol() * MATRIX_CELL_SIZE, level.getFirstPlayerRow() * MATRIX_CELL_SIZE);
-        secondTank = new PlayerTank("Pesho", TANK_START_HEALTH, level.getSecondPlayerCol() * MATRIX_CELL_SIZE, level.getSecondPlayerRow() * MATRIX_CELL_SIZE);
+        this.firstTank = new PlayerTank("Denis", TANK_START_HEALTH, level.getFirstPlayerCol() * MATRIX_CELL_SIZE, level.getFirstPlayerRow() * MATRIX_CELL_SIZE);
+        this.secondTank = new PlayerTank("Pesho", TANK_START_HEALTH, level.getSecondPlayerCol() * MATRIX_CELL_SIZE, level.getSecondPlayerRow() * MATRIX_CELL_SIZE);
 
-        tanks.add(firstTank);
-        tanks.add(secondTank);
+        this.tanks.add(this.firstTank);
+        if(this.hasTwoPlayers){
+            this.tanks.add(this.secondTank);
+        }
     }
 
     private String getTankScores() {
-        String msg = firstTank.getName() + " " + firstTank.getScore();
-        if (hasTwoPlayers){
-            msg += "\n" + secondTank.getName() + " " + secondTank.getScore();
+        StringBuilder msg = new StringBuilder();
+        msg.append(this.firstTank.getName())
+                .append(" ")
+                .append(this.firstTank.getScore());
+        if (this.hasTwoPlayers){
+            msg.append("\n")
+                    .append(this.secondTank.getName())
+                    .append(" ")
+                    .append(this.secondTank.getScore());
         }
 
-        return msg;
+        return msg.toString();
     }
 
     protected void initHandlers(Scene s) {
@@ -213,7 +221,7 @@ public class GameStage extends BasicStage {
             if (enemyTank.isAlive()){
                 Drawer.drawTank(gc, enemyTank);
                 if (enemyTank.canShootBullet(now)) {
-                    this.bulletHandler.AddBullet(enemyTank.spawnBullet());
+                    this.bulletHandler.addBullet(enemyTank.spawnBullet());
                 }
                 enemyTank.moveEnemy();
             } else {

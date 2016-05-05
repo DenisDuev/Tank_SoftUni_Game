@@ -47,23 +47,31 @@ public class Drawer {
     public static void drawExplosions(GraphicsContext gc, List<Explosion> explosions) {
         for (int i = 0; i < explosions.size(); i++) {
             Explosion explosion = explosions.get(i);
-            gc.drawImage(explosion.getImage(), explosion.getX(), explosion.getY());
-            if (explosion.decrementFrames()) {
+            explosion.draw(gc);
+            if (explosion.isExplosionFinished()) {
                 explosions.remove(i);
             }
         }
     }
 
     public static void drawBullets(GraphicsContext gc, ObjectHandler objectHandler) {
-        List<Bullet> bullets = objectHandler.GetBulletsToDraw();
+        List<Bullet> bullets = objectHandler.getBulletsToDraw();
         for (Bullet bullet : bullets) {
-            gc.drawImage(bullet.getImage(), bullet.getX(), bullet.getY());
+            bullet.draw(gc);
         }
     }
 
     public static void drawTank(GraphicsContext graphicsContext, Tank tank) {
-        if (tank.isAlive()){
-            graphicsContext.drawImage(tank.getImage(), tank.getX(), tank.getY());
+        if (tank.isAlive()) {
+            tank.draw(graphicsContext);
         }
+    }
+
+    public static void drawBird(GraphicsContext graphicsContext, Image bird) {
+        graphicsContext.drawImage(bird, BIRD_X, BIRD_Y);
+    }
+
+    public static void drawBackground(GraphicsContext graphicsContext, Image background) {
+        graphicsContext.drawImage(background, 0, 0);
     }
 }

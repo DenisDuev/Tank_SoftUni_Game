@@ -18,7 +18,7 @@ public class CollisionDetector {
         this.isGameOver = false;
     }
 
-    public boolean shouldMove(Tank tank, int x, int y) {
+    public boolean shouldTankMove(Tank tank, int x, int y) {
         int tankX = tank.getX() + x;
         int tankY = tank.getY() + y;
         if (tankX < 0 || tankX + TANK_SIZE + 2 > BOARD_SIZE || tankY < 0 || tankY + TANK_SIZE + 2 > BOARD_SIZE) {
@@ -60,26 +60,26 @@ public class CollisionDetector {
     public boolean isBulletCollide(Bullet bullet) {
         int bulletX = bullet.getX();
         int bulletY = bullet.getY();
-        if (bulletX < 0 || bulletX > BOARD_SIZE - Bullet.IMAGE_WIDHT || bulletY < 0 || bulletY >= BOARD_SIZE) {
+        if (bulletX < 0 || bulletX > BOARD_SIZE - Bullet.IMAGE_WIGHT || bulletY < 0 || bulletY >= BOARD_SIZE) {
             return true;
         }
 
         if (matrix[bulletY / MATRIX_CELL_SIZE][bulletX / MATRIX_CELL_SIZE] <= 10 && matrix[bulletY / MATRIX_CELL_SIZE][bulletX / MATRIX_CELL_SIZE] > 0) {
             matrix[bulletY / MATRIX_CELL_SIZE][bulletX / MATRIX_CELL_SIZE]--;
-            bullet.getParentTank().addScoreWallShoot();
+            bullet.addScoreToParentTankWallShoot();
             return true;
         }
 
         for (Tank tank : tanks) {
             if (tank.getX() <= bulletX && bulletX <= tank.getX() + TANK_SIZE && tank.getY() <= bulletY && bulletY <= tank.getY() + TANK_SIZE) {
                 tank.decrementHealth();
-                bullet.getParentTank().addScoreTankShoot();
+                bullet.addScoreToParentTankTankShoot();
                 return true;
             }
         }
         //detectBird
-        if (8 * MATRIX_CELL_SIZE <= bulletX && bulletX <= 9 * MATRIX_CELL_SIZE && 18 * MATRIX_CELL_SIZE <= bulletY) {
-            isGameOver = true;
+        if (BIRD_X <= bulletX && bulletX <= BIRD_X + MATRIX_CELL_SIZE && BIRD_Y <= bulletY) {
+            this.isGameOver = true;
             return false;
         }
 

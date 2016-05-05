@@ -2,9 +2,6 @@ package objects.game_objects;
 
 import objects.game_objects.tanks.Tank;
 
-/**
- * Created by Denis on 15.4.2016 �..
- */
 public class Player {
     private int lives;
     private Tank tank;
