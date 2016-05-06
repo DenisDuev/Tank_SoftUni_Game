@@ -9,7 +9,7 @@ import input.MapReader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import objects.UI.MenuButton;
-import objects.UI.ScoreLabel;
+import objects.UI.MenuLabel;
 import objects.game_objects.tanks.EnemyTank;
 import objects.game_objects.tanks.PlayerTank;
 import objects.game_objects.tanks.Tank;
@@ -28,6 +28,7 @@ import objects.game_objects.Explosion;
 import output.MapLevel;
 import output.ScoreManager;
 import utilities.ExitBox;
+import utilities.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +93,8 @@ public class GameStage extends BasicStage {
             e.consume();
             closeProgram();
         });
-        this.scoreTank1 = new ScoreLabel("");
-        this.scoreTank2 = new ScoreLabel("");
+        this.scoreTank1 = new MenuLabel("");
+        this.scoreTank2 = new MenuLabel("");
         leftDisplay.getChildren().addAll(backButton, scoreTank1, scoreTank2);
         leftDisplay.setAlignment(Pos.CENTER);
         root.setCenter(leftDisplay);
@@ -143,8 +144,8 @@ public class GameStage extends BasicStage {
     }
 
     protected void initTanks() {
-        this.firstTank = new PlayerTank("Denis", TANK_START_HEALTH, level.getFirstPlayerCol() * MATRIX_CELL_SIZE, level.getFirstPlayerRow() * MATRIX_CELL_SIZE);
-        this.secondTank = new PlayerTank("Pesho", TANK_START_HEALTH, level.getSecondPlayerCol() * MATRIX_CELL_SIZE, level.getSecondPlayerRow() * MATRIX_CELL_SIZE);
+        this.firstTank = new PlayerTank(Settings.getFirstPlayerName(), TANK_START_HEALTH, level.getFirstPlayerCol() * MATRIX_CELL_SIZE, level.getFirstPlayerRow() * MATRIX_CELL_SIZE);
+        this.secondTank = new PlayerTank(Settings.getSecondPlayerName(), TANK_START_HEALTH, level.getSecondPlayerCol() * MATRIX_CELL_SIZE, level.getSecondPlayerRow() * MATRIX_CELL_SIZE);
 
         this.tanks.add(this.firstTank);
         if(this.hasTwoPlayers){

@@ -9,7 +9,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import objects.UI.MenuButton;
-import objects.UI.ScoreLabel;
+import objects.UI.MenuLabel;
 import objects.UI.TopScoreLabel;
 import output.ScoreManager;
 
@@ -22,7 +22,7 @@ public class TopScoresStage extends BasicStage {
 
     @Override
     public void show() {
-        Label title = new ScoreLabel("Top 10 Scores");
+        Label title = new MenuLabel("Top 10 Scores");
         Label text = new TopScoreLabel(ScoreManager.getScores());
         Button backButton = new MenuButton("Back");
         backButton.setOnMouseClicked(e -> stage.setScene(mainMenuScene));

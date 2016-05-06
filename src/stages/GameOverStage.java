@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import objects.UI.MenuButton;
-import objects.UI.ScoreLabel;
+import objects.UI.MenuLabel;
 
 public class GameOverStage extends BasicStage {
 
@@ -24,7 +24,7 @@ public class GameOverStage extends BasicStage {
         Label gameOverLabel = new Label("GAME OVER");
         gameOverLabel.setFont(Font.font(50));
         gameOverLabel.setTextFill(Color.RED);
-        Label text = new ScoreLabel(messageScores);
+        Label text = new MenuLabel(messageScores);
         Button backButton = new MenuButton("Back");
         backButton.setOnMouseClicked(e -> stage.setScene(mainMenuScene));
 

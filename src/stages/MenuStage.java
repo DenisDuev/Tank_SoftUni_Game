@@ -1,5 +1,6 @@
 package stages;
 
+import input.SettingsReader;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,6 +9,12 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import objects.UI.MenuButton;
+import utilities.Settings;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import static constants.Constants.*;
 
@@ -17,6 +24,7 @@ public class MenuStage extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        initialiseSettings();
         Button onePlayerButton = new MenuButton("1 Player");
         Button twoPlayersButton = new MenuButton("2 Players");
         Button mapEditorButton = new MenuButton("Map Editor");
@@ -29,7 +37,7 @@ public class MenuStage extends Application {
         mapEditorButton.setOnAction(b -> new MapEditorStage(primaryStage, this.windows).show());
         topScoresButton.setOnAction(b -> new TopScoresStage(primaryStage, this.windows).show());
         settingsButton.setOnAction(event -> new SettingsStage(primaryStage, this.windows).show());
-        creditsButton.setOnAction(event -> new CreditsStage(primaryStage,this.windows).show() );
+        creditsButton.setOnAction(event -> new CreditsStage(primaryStage, this.windows).show());
 
         VBox centerMenu = new VBox(PADDING);
         centerMenu.setPrefSize(WINDOWS_WIDTH, WINDOWS_HEIGHT);
@@ -63,6 +71,10 @@ public class MenuStage extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
 
+    }
+
+    private void initialiseSettings() {
+        SettingsReader.loadSettings();
     }
 
 }
