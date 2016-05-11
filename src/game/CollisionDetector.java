@@ -1,6 +1,7 @@
 package game;
 
 import objects.game_objects.Bullet;
+import objects.game_objects.tanks.EnemyTank;
 import objects.game_objects.tanks.Tank;
 
 import java.util.List;
@@ -72,7 +73,7 @@ public class CollisionDetector {
 
         for (Tank tank : tanks) {
             if (tank.getX() <= bulletX && bulletX <= tank.getX() + TANK_SIZE && tank.getY() <= bulletY && bulletY <= tank.getY() + TANK_SIZE) {
-                tank.decrementHealth();
+                tank.decrementHealth(bullet.getDamage());
                 bullet.addScoreToParentTankTankShoot();
                 return true;
             }

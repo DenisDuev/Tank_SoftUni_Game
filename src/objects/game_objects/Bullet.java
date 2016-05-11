@@ -17,12 +17,19 @@ public class Bullet extends GameObject implements Drawable, Moveable {
     private Image image;
     private Tank parentTank;
 
-    public Bullet(int x, int y, int direction, Tank parentTank) {
+    public int getDamage() {
+        return damage;
+    }
+
+    private int damage;
+
+    public Bullet(int x, int y, int direction, Tank parentTank, int damage) {
         super(x, y);
         this.direction = direction;
         this.setVelocitiesAndStartPoint();
         this.parentTank = parentTank;
         this.setImage();
+        this.damage = damage;
     }
 
     private void setImage() {
@@ -69,11 +76,11 @@ public class Bullet extends GameObject implements Drawable, Moveable {
         return this.image;
     }
 
-    public void addScoreToParentTankWallShoot(){
+    public void addScoreToParentTankWallShoot() {
         this.parentTank.addScoreWallShoot();
     }
 
-    public void addScoreToParentTankTankShoot(){
+    public void addScoreToParentTankTankShoot() {
         this.parentTank.addScoreTankShoot();
     }
 

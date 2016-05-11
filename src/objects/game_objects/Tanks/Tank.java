@@ -1,33 +1,30 @@
-package objects.game_objects.Tanks;
+package objects.game_objects.tanks;
 
-import constants.Constants;
+import Interfaces.CollisionDetectionable;
+import Interfaces.Drawable;
 import game.CollisionDetector;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import objects.game_objects.Bullet;
+import objects.game_objects.GameObject;
 
-/**
- * Created by Denis on 13.4.2016 �..
- */
-public class Tank extends GameObject {
-    private String name;
-    private int health;
-    private int score;
+public abstract class Tank extends GameObject implements Drawable, CollisionDetectionable {
+    protected int health;
     private boolean isAlive;
     protected Image upImage;
     protected Image downImage;
     protected Image leftImage;
     protected Image rightImage;
     protected Image currentImage;
-
+    protected int tankDamage;
     protected CollisionDetector collisionDetector;
 
 
-    public Tank(String name, int health, int x, int y)  {
+    public Tank(int health, int x, int y)  {
         super(x,y);
-        this.name = name;
         this.health = health;
-        this.score = 0;
         this.isAlive = true;
-        initImages();
+        this.initImages();
     }
 
     public boolean isAlive(){
@@ -50,7 +47,7 @@ public class Tank extends GameObject {
         if (this.isAlive()){
             checkDirection(xAdd, yAdd);
 
-            if (collisionDetector.shouldMove(this, xAdd, yAdd)){
+            if (collisionDetector.shouldTankMove(this, xAdd, yAdd)){
                 this.x += xAdd;
                 this.y += yAdd;
             }
@@ -58,7 +55,7 @@ public class Tank extends GameObject {
     }
 
     protected void checkDirection(int x, int y) {
-        int currentDir = 0;
+        int currentDir;
         if (x != 0) {
             if (x == 1) {
                 currentDir = RIGHT;
@@ -107,42 +104,31 @@ public class Tank extends GameObject {
         return this.currentImage;
     }
 
-
-    public String getName() {
-        return name;
-    }
-
+    @Override
     public void setCollisionDetector(CollisionDetector collisionDetector) {
         this.collisionDetector = collisionDetector;
     }
 
     public Bullet spawnBullet(){
-        return new Bullet(this.x, this.y, this.direction, this);
+        return new Bullet(this.x, this.y, this.direction, this, this.tankDamage);
     }
 
-    public void addScoreWallShoot(){
-        this.score += 10;
-    }
-    public void addScoreTankShoot(){
-        this.score += 100;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void decrementHealth(){
-        this.health -= 30;
+    public void decrementHealth(int damage){
+        this.health -= damage;
         if (this.health <= 0){
             this.die();
         }
     }
 
-    public void goToNextLevel(int x, int y){
-        this.health = Constants.TANK_START_HEALTH;
-        this.x = x;
-        this.y = y;
-        this.direction = UP;
-        changeImageDir(this.direction);
+    public void addScoreWallShoot(){
+
+    }
+    public void addScoreTankShoot(){
+
+    }
+
+    @Override
+    public void draw(GraphicsContext graphicsContext) {
+        graphicsContext.drawImage(this.getImage(), this.getX(), this.getY());
     }
 }

@@ -9,6 +9,7 @@ public class PlayerTank extends Tank {
     public PlayerTank(String name, int health, int x, int y) {
         super(health, x, y);
         this.name = name;
+        this.tankDamage = 50;
     }
 
     @Override

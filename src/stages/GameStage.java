@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import objects.UI.MenuButton;
 import objects.UI.MenuLabel;
+import objects.game_objects.tanks.EnemyBossTank;
 import objects.game_objects.tanks.EnemyTank;
 import objects.game_objects.tanks.PlayerTank;
 import objects.game_objects.tanks.Tank;
@@ -54,7 +55,6 @@ public class GameStage extends BasicStage {
     private InputHandler inputHandler;
     private Scene scene;
     private boolean isGameFinallyOver;
-
     private PlayerTank firstTank;
     private PlayerTank secondTank;
     private Label scoreTank1;
@@ -114,9 +114,9 @@ public class GameStage extends BasicStage {
 
             @Override
             public void handle(long now) {
-                if (!collisionDetector.isBirdDeath() && isTanksAlive()){
-                    Drawer.drawBackground(gc,background);
-                    Drawer.drawBird(gc,bird);
+                if (!collisionDetector.isBirdDeath() && isTanksAlive()) {
+                    Drawer.drawBackground(gc, background);
+                    Drawer.drawBird(gc, bird);
                     spawnEnemyTanks(now, gc);
                     goToNextLevelIfCan();
                     Drawer.drawTank(gc, firstTank);
@@ -131,7 +131,7 @@ public class GameStage extends BasicStage {
                     scoreTank1.setText(firstTank.getName() + " " + Integer.toString(firstTank.getScore()));
 
                     inputHandler.refresh();
-                } else if(!isGameFinallyOver){
+                } else if (!isGameFinallyOver) {
                     savesScores();
                     GameOverStage gameOver = new GameOverStage(stage, mainMenuScene);
                     gameOver.show(getTankScores());
@@ -148,7 +148,7 @@ public class GameStage extends BasicStage {
         this.secondTank = new PlayerTank(Settings.getSecondPlayerName(), TANK_START_HEALTH, level.getSecondPlayerCol() * MATRIX_CELL_SIZE, level.getSecondPlayerRow() * MATRIX_CELL_SIZE);
 
         this.tanks.add(this.firstTank);
-        if(this.hasTwoPlayers){
+        if (this.hasTwoPlayers) {
             this.tanks.add(this.secondTank);
         }
     }
@@ -158,7 +158,7 @@ public class GameStage extends BasicStage {
         msg.append(this.firstTank.getName())
                 .append(" ")
                 .append(this.firstTank.getScore());
-        if (this.hasTwoPlayers){
+        if (this.hasTwoPlayers) {
             msg.append("\n")
                     .append(this.secondTank.getName())
                     .append(" ")
@@ -186,7 +186,7 @@ public class GameStage extends BasicStage {
     }
 
     private void goToNextLevelIfCan() {
-        if (this.spawnedEnemies >= this.numberOfEnemiesToBeSpawn && this.enemyTanks.size() == 0){
+        if (this.spawnedEnemies >= this.numberOfEnemiesToBeSpawn && this.enemyTanks.size() == 0) {
             this.spawnedEnemies = 0;
             initLevel();
             initCollisionDetector(this.firstTank, this.secondTank);
@@ -207,9 +207,15 @@ public class GameStage extends BasicStage {
                 }
 
             }
-            if (isReadyToBeSpawn){
+            if (isReadyToBeSpawn) {
+                EnemyTank enemyTank;
+                if (this.spawnedEnemies + 1 == this.numberOfEnemiesToBeSpawn) {
+                    enemyTank = new EnemyBossTank(EnemyBossTank.BOSS_HEALTH, level.getEntryPointCol() * MATRIX_CELL_SIZE, level.getEntryPointRow() * MATRIX_CELL_SIZE);
+                }
+                else {
+                    enemyTank = new EnemyTank(ENEMY_TANK_START_HEALTH, level.getEntryPointCol() * MATRIX_CELL_SIZE, level.getEntryPointRow() * MATRIX_CELL_SIZE);
+                }
                 this.spawnedEnemies++;
-                EnemyTank enemyTank = new EnemyTank(ENEMY_TANK_START_HEALTH, level.getEntryPointCol() * MATRIX_CELL_SIZE, level.getEntryPointRow() * MATRIX_CELL_SIZE);
                 enemyTank.setCollisionDetector(this.collisionDetector);
                 this.enemyTanks.add(enemyTank);
                 this.tanks.add(enemyTank);
@@ -217,9 +223,9 @@ public class GameStage extends BasicStage {
             }
         }
 
-        for (int i = 0;i < this.enemyTanks.size(); i++) {
+        for (int i = 0; i < this.enemyTanks.size(); i++) {
             EnemyTank enemyTank = this.enemyTanks.get(i);
-            if (enemyTank.isAlive()){
+            if (enemyTank.isAlive()) {
                 Drawer.drawTank(gc, enemyTank);
                 if (enemyTank.canShootBullet(now)) {
                     this.bulletHandler.addBullet(enemyTank.spawnBullet());
@@ -229,7 +235,6 @@ public class GameStage extends BasicStage {
                 this.enemyTanks.remove(i);
             }
         }
-
     }
 
     private boolean isEntryPointFree(EnemyTank tempTank) {
@@ -260,8 +265,8 @@ public class GameStage extends BasicStage {
         this.wallImages[3] = new Image("resources/walls/wall_green.png");
     }
 
-    private boolean isTanksAlive(){
-        if (!this.hasTwoPlayers){
+    private boolean isTanksAlive() {
+        if (!this.hasTwoPlayers) {
             return this.firstTank.isAlive();
         }
 
