@@ -1,8 +1,11 @@
 package objects.game_objects.tanks;
 
+import Interfaces.Effectable;
+import javafx.scene.image.Image;
+
 import static constants.Constants.*;
 
-public class PlayerTank extends Tank {
+public class PlayerTank extends Tank{
     private int score;
     private String name;
 
@@ -10,6 +13,15 @@ public class PlayerTank extends Tank {
         super(health, x, y);
         this.name = name;
         this.tankDamage = 50;
+    }
+
+    @Override
+    protected void initImages() {
+        Image up = new Image("resources/tanks/silver_tank/silver_tank_up.png");
+        Image down = new Image("resources/tanks/silver_tank/silver_tank_down.png");
+        Image left = new Image("resources/tanks/silver_tank/silver_tank_left.png");
+        Image right = new Image("resources/tanks/silver_tank/silver_tank_right.png");
+        this.setImages(up, down, left, right);
     }
 
     @Override

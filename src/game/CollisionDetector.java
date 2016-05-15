@@ -1,7 +1,8 @@
 package game;
 
 import objects.game_objects.Bullet;
-import objects.game_objects.tanks.EnemyTank;
+import objects.game_objects.GameObject;
+import objects.game_objects.power_ups.PowerUp;
 import objects.game_objects.tanks.Tank;
 
 import java.util.List;
@@ -11,11 +12,13 @@ import static constants.Constants.*;
 public class CollisionDetector {
     private int[][] matrix;
     private List<Tank> tanks;
+    private List<PowerUp> powerups;
     private boolean isGameOver;
 
-    public CollisionDetector(int[][] matrix, List<Tank> tanks) {
+    public CollisionDetector(int[][] matrix, List<Tank> tanks, List<PowerUp> powerups) {
         this.matrix = matrix;
         this.tanks = tanks;
+        this.powerups = powerups;
         this.isGameOver = false;
     }
 
@@ -66,7 +69,7 @@ public class CollisionDetector {
         }
 
         if (matrix[bulletY / MATRIX_CELL_SIZE][bulletX / MATRIX_CELL_SIZE] <= 10 && matrix[bulletY / MATRIX_CELL_SIZE][bulletX / MATRIX_CELL_SIZE] > 0) {
-            matrix[bulletY / MATRIX_CELL_SIZE][bulletX / MATRIX_CELL_SIZE]--;
+            matrix[bulletY / MATRIX_CELL_SIZE][bulletX / MATRIX_CELL_SIZE]-= bullet.getDamage() / 10;
             bullet.addScoreToParentTankWallShoot();
             return true;
         }
@@ -89,6 +92,33 @@ public class CollisionDetector {
 
     public boolean isBirdDeath(){
         return this.isGameOver;
+    }
+
+    public void getPowerUps(){
+        for (int i = 0; i < this.powerups.size(); i++) {
+            PowerUp powerup = this.powerups.get(i);
+            if (!powerup.isAppear()){
+                this.powerups.remove(i);
+                continue;
+            }
+
+            for (Tank tank : this.tanks) {
+                if (isObjectsCollide(powerup, tank, PowerUp.WIDTH )){
+                    powerup.SetEffect(tank);
+                    this.powerups.remove(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    private static boolean isObjectsCollide(GameObject firstObeject, GameObject secondObject, int firstObjectSize) {
+        boolean isUpLeftPoint    = secondObject.getX() <= firstObeject.getX() && firstObeject.getX() <= secondObject.getX() + firstObjectSize && secondObject.getY() <= firstObeject.getY() && firstObeject.getY() <= secondObject.getY() + firstObjectSize;
+        boolean isUpRightPoint   = secondObject.getX() <= firstObeject.getX() + firstObjectSize && firstObeject.getX() + firstObjectSize <= secondObject.getX() + firstObjectSize && secondObject.getY() <= firstObeject.getY() && firstObeject.getY() <= secondObject.getY() + firstObjectSize;
+        boolean isDownLeftPoint  = secondObject.getX() <= firstObeject.getX() && firstObeject.getX() <= secondObject.getX() + firstObjectSize && secondObject.getY() <= firstObeject.getY() + firstObjectSize && firstObeject.getY() + firstObjectSize <= secondObject.getY() + firstObjectSize;
+        boolean isDownRightPoint = secondObject.getX() <= firstObeject.getX() + firstObjectSize && firstObeject.getX() + firstObjectSize <= secondObject.getX() + firstObjectSize && secondObject.getY() <= firstObeject.getY() + firstObjectSize && firstObeject.getY() + firstObjectSize <= secondObject.getY() + TANK_SIZE;
+
+        return  (isUpLeftPoint || isUpRightPoint || isDownLeftPoint || isDownRightPoint);
     }
 }
 

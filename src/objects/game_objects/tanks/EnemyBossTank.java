@@ -38,10 +38,10 @@ public class EnemyBossTank extends EnemyTank {
 
     @Override
     protected void initImages() {
-        this.upImage = new Image("resources/tanks/red_tank/red_tank_up.png");
-        this.downImage = new Image("resources/tanks/red_tank/red_tank_down.png");
-        this.leftImage = new Image("resources/tanks/red_tank/red_tank_left.png");
-        this.rightImage = new Image("resources/tanks/red_tank/red_tank_right.png");
-        this.currentImage = new Image("resources/tanks/red_tank/red_tank_down.png");
+        Image up = new Image("resources/tanks/red_tank/red_tank_up.png");
+        Image down = new Image("resources/tanks/red_tank/red_tank_down.png");
+        Image left = new Image("resources/tanks/red_tank/red_tank_left.png");
+        Image right = new Image("resources/tanks/red_tank/red_tank_right.png");
+        this.setImages(up, down, left, right);
     }
 }

@@ -5,8 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.game_objects.Bullet;
 import objects.game_objects.Explosion;
+import objects.game_objects.power_ups.PowerUp;
 import objects.game_objects.tanks.Tank;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static constants.Constants.*;
@@ -73,5 +75,11 @@ public class Drawer {
 
     public static void drawBackground(GraphicsContext graphicsContext, Image background) {
         graphicsContext.drawImage(background, 0, 0);
+    }
+
+    public static void drawPowerUps(GraphicsContext graphicsContext, List<PowerUp> powerUps){
+        for (PowerUp powerUp : powerUps) {
+            powerUp.draw(graphicsContext);
+        }
     }
 }

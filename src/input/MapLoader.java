@@ -33,6 +33,9 @@ public class MapLoader {
     }
 
     public String getNextLevelName(){
+        if (index == this.maps.size()){
+            index = 0;
+        }
         return this.maps.get(index++);
     }
 

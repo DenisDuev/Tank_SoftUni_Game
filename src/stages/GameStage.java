@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import objects.UI.MenuButton;
 import objects.UI.MenuLabel;
+import objects.game_objects.power_ups.LivePowerUp;
+import objects.game_objects.power_ups.PowerUp;
 import objects.game_objects.tanks.EnemyBossTank;
 import objects.game_objects.tanks.EnemyTank;
 import objects.game_objects.tanks.PlayerTank;
@@ -38,12 +40,14 @@ import static constants.Constants.*;
 
 public class GameStage extends BasicStage {
     private static final int NUMBER_OF_IMAGES = 4;
+    private static final int SPAWN_TIME = 4;
 
     private GraphicsContext gc;
     private boolean hasTwoPlayers;
-    private ObjectHandler bulletHandler;
-    private List<Explosion> explosions = new ArrayList<>();
+    private ObjectHandler handler;
+    private List<Explosion> explosions;
     private Image[] wallImages;
+    private List<PowerUp> powerUps;
     private MapLevel level;
     private int[][] matrix;
     private List<EnemyTank> enemyTanks;
@@ -59,7 +63,7 @@ public class GameStage extends BasicStage {
     private PlayerTank secondTank;
     private Label scoreTank1;
     private Label scoreTank2;
-
+    private long lastTimePowerUp;
     private long lastTimeSpawn;
 
     public GameStage(Stage stage, Scene mainMenuScene, boolean hasTwoPlayers) {
@@ -69,8 +73,10 @@ public class GameStage extends BasicStage {
         this.tanks = new ArrayList<>();
         this.explosions = new ArrayList<>();
         this.mapLoader = new MapLoader();
+        this.powerUps = new ArrayList<>();
         this.numberOfEnemiesToBeSpawn = 10;
         this.spawnedEnemies = 0;
+        this.lastTimePowerUp = System.nanoTime();
     }
 
     @Override
@@ -126,9 +132,13 @@ public class GameStage extends BasicStage {
                     }
 
                     Drawer.drawWalls(gc, wallImages, matrix);
-                    Drawer.drawBullets(gc, bulletHandler);
+                    Drawer.drawBullets(gc, handler);
                     Drawer.drawExplosions(gc, explosions);
                     scoreTank1.setText(firstTank.getName() + " " + Integer.toString(firstTank.getScore()));
+
+                    generatePowerUp();
+                    handler.managePowerUps();
+                    Drawer.drawPowerUps(gc, powerUps);
 
                     inputHandler.refresh();
                 } else if (!isGameFinallyOver) {
@@ -143,7 +153,15 @@ public class GameStage extends BasicStage {
 
     }
 
-    protected void initTanks() {
+    private void generatePowerUp() {
+        if ((System.nanoTime() - this.lastTimeSpawn )/1_000_000_000.0 > SPAWN_TIME){
+            this.powerUps.add(LivePowerUp.generateAtRandomLocation());
+            this.lastTimeSpawn = System.nanoTime();
+        }
+
+    }
+
+    private void initTanks() {
         this.firstTank = new PlayerTank(Settings.getFirstPlayerName(), TANK_START_HEALTH, level.getFirstPlayerCol() * MATRIX_CELL_SIZE, level.getFirstPlayerRow() * MATRIX_CELL_SIZE);
         this.secondTank = new PlayerTank(Settings.getSecondPlayerName(), TANK_START_HEALTH, level.getSecondPlayerCol() * MATRIX_CELL_SIZE, level.getSecondPlayerRow() * MATRIX_CELL_SIZE);
 
@@ -168,18 +186,18 @@ public class GameStage extends BasicStage {
         return msg.toString();
     }
 
-    protected void initHandlers(Scene s) {
-        this.bulletHandler = new ObjectHandler(this.collisionDetector, this.explosions);
-        this.inputHandler = new InputHandler(s, this.firstTank, this.secondTank, this.hasTwoPlayers, this.bulletHandler);
+    private void initHandlers(Scene s) {
+        this.handler = new ObjectHandler(this.collisionDetector, this.explosions);
+        this.inputHandler = new InputHandler(s, this.firstTank, this.secondTank, this.hasTwoPlayers, this.handler);
     }
 
-    protected void initCollisionDetector(Tank tank1, Tank tank2) {
-        this.collisionDetector = new CollisionDetector(this.matrix, this.tanks);
+    private void initCollisionDetector(Tank tank1, Tank tank2) {
+        this.collisionDetector = new CollisionDetector(this.matrix, this.tanks, this.powerUps);
         tank1.setCollisionDetector(this.collisionDetector);
         tank2.setCollisionDetector(this.collisionDetector);
     }
 
-    protected void initLevel() {
+    private void initLevel() {
 
         this.level = MapReader.readMap("maps//" + this.mapLoader.getNextLevelName() + ".map");
         this.matrix = level.getMatrix();
@@ -228,7 +246,7 @@ public class GameStage extends BasicStage {
             if (enemyTank.isAlive()) {
                 Drawer.drawTank(gc, enemyTank);
                 if (enemyTank.canShootBullet(now)) {
-                    this.bulletHandler.addBullet(enemyTank.spawnBullet());
+                    this.handler.addBullet(enemyTank.spawnBullet());
                 }
                 enemyTank.moveEnemy();
             } else {
@@ -257,7 +275,7 @@ public class GameStage extends BasicStage {
         ScoreManager.saveScore(this.firstTank.getScore(), this.firstTank.getName(), this.secondTank.getScore(), this.secondTank.getName());
     }
 
-    public void initWallImages() {
+    private void initWallImages() {
         this.wallImages = new Image[NUMBER_OF_IMAGES];
         this.wallImages[0] = new Image("resources/walls/wall_ordinary.png");
         this.wallImages[1] = new Image("resources/walls/wall_metal.png");

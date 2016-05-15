@@ -1,28 +1,30 @@
-package objects.game_objects.Tanks;
+package objects.game_objects.tanks;
 
 import javafx.scene.image.Image;
 
 import java.util.Random;
 
-/**
- * Created by Denis on 19.4.2016 �..
- */
 public class EnemyTank extends Tank {
-    private long lastTimeSpawn;
 
-    public EnemyTank(String name, int health, int x, int y) {
-        super(name, health, x, y);
-        this.direction = getRandomDir();
+    private long lastTimeSpawn;
+    private boolean bulletShoot;
+    private Random random;
+
+    public EnemyTank(int health, int x, int y) {
+        super(health, x, y);
+        this.random = new Random();
+        this.direction = getDir();
         this.lastTimeSpawn = System.nanoTime();
+        this.tankDamage = 30;
     }
 
     @Override
     protected void initImages() {
-        this.upImage = new Image("resources/tanks/green_tank/green_tank_up.png");
-        this.downImage = new Image("resources/tanks/green_tank/green_tank_down.png");
-        this.leftImage = new Image("resources/tanks/green_tank/green_tank_left.png");
-        this.rightImage = new Image("resources/tanks/green_tank/green_tank_right.png");
-        this.currentImage = new Image("resources/tanks/green_tank/green_tank_down.png");
+        Image up = new Image("resources/tanks/green_tank/green_tank_up.png");
+        Image left = new Image("resources/tanks/green_tank/green_tank_left.png");
+        Image right = new Image("resources/tanks/green_tank/green_tank_right.png");
+        Image down = new Image("resources/tanks/green_tank/green_tank_down.png");
+        this.setImages(up, down, left, right);
     }
 
     public void moveEnemy() {
@@ -44,27 +46,33 @@ public class EnemyTank extends Tank {
         }
 
         changeImageDir(this.direction);
-        if (collisionDetector.shouldMove(this, xChange, yChange)) {
+        if (collisionDetector.shouldTankMove(this, xChange, yChange)) {
             this.x += xChange;
             this.y += yChange;
         } else {
-            Random random = new Random();
-            this.direction = random.nextInt(4);
+            this.direction = getDir();
         }
     }
 
     public boolean canShootBullet(long now) {
-        if ((now - this.lastTimeSpawn) / 1_000_000_00.0 > 40){
+        if ((((now - this.lastTimeSpawn) + generateRandomSecondDiff()) / 1_000_000_00.0) > 40) {
             this.lastTimeSpawn = now;
+            bulletShoot = true;
             return true;
         }
-
+        if (bulletShoot) {
+            this.direction = getDir();
+            bulletShoot = false;
+        }
         return false;
     }
 
-    private int getRandomDir(){
-        Random random = new Random();
+    protected int getDir() {
         return random.nextInt(4);
+    }
+
+    private int generateRandomSecondDiff(){
+        return random.nextInt(80000);
     }
 }
 

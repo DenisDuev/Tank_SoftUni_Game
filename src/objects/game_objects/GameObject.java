@@ -3,10 +3,10 @@ package objects.game_objects;
 import javafx.scene.image.Image;
 
 public abstract class GameObject {
-    protected final int UP = 0;
-    protected final int DOWN = 1;
-    protected final int LEFT = 2;
-    protected final int RIGHT = 3;
+    protected final static int UP = 0;
+    protected final static int DOWN = 1;
+    protected final static int LEFT = 2;
+    protected final static int RIGHT = 3;
 
     protected int x;
     protected int y;

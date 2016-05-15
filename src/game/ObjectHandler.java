@@ -32,4 +32,8 @@ public class ObjectHandler {
         }
         return bullets;
     }
+
+    public void managePowerUps(){
+        this.collisionDetector.getPowerUps();
+    }
 }
