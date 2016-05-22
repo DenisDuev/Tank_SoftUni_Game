@@ -20,9 +20,7 @@ public class CreditsStage extends BasicStage {
     @Override
     public void show(){
         Text creditsDenis = new Text("Denis Duev - from Krupnik, graduated from PMG Blagoevgrad with\na specialty in mathematics and informatics works as a creator of online\nvideo lessons on mathematics for the internet site SuperUrok.com. has\nexperience with C# and Java, has certificates for accomplishing courses\nC# Basics, Data structures and Java Fundamentalsat SoftUni,\nstudentof SoftUni and Sofia University");
-        Text creditsMarto = new Text("Martin Lachev - from Sofia, unfortunatelly curently studing in UNWE and\n fortunatelly in Softuni  ");
         creditsDenis.setFont(Font.font(18));
-        creditsMarto.setFont(Font.font(18));
 
         Button backButton = new MenuButton("Back");
         backButton.setOnMouseClicked(e -> stage.setScene(mainMenuScene));
@@ -40,7 +38,7 @@ public class CreditsStage extends BasicStage {
 
         VBox vBox = new VBox(20);
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(creditsDenis,creditsMarto, backButton);
+        vBox.getChildren().addAll(creditsDenis, backButton);
         vBox.setBackground(background);
 
         Scene scene = new Scene(vBox, Constants.WINDOWS_WIDTH, Constants.WINDOWS_HEIGHT, Color.BLACK);
